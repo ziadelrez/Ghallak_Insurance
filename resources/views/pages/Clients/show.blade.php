@@ -1,0 +1,354 @@
+@extends('layouts.masteradminpanel')
+
+
+@section('title')
+    {{ trans('page-client.clients.title') }}
+@endsection
+
+@push('css_content')
+    <link href={{ asset('adminassets/vendor/dropzone/css/dropzone.css') }} rel="stylesheet" type="text/css"/>
+    <link href={{ asset('adminassets/vendor/featherlight/featherlight.css') }} rel="stylesheet" type="text/css"/>
+    <link href={{ asset('adminassets/vendor/select2/select2.css') }} rel="stylesheet" type="text/css"/>
+@endpush
+
+@section('content')
+
+    @include('includes.adminpanel.header')
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <div class="breadcrumbs">
+
+        <div class="col-sm-8">
+            <div class="page-header float-right">
+                <div class="page-title">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content mt-3">
+        <div class="animated fadeIn">
+            @if($errors->any())
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+{{--                            <div class="card-header card-error">--}}
+{{--                                <strong class="card-title">{{trans('global.VALIDATION')}}</strong>--}}
+{{--                            </div>--}}
+                            <div class="card-body">
+                                <!-- Credit Card -->
+{{--                                <ul class="alert alert-danger">--}}
+{{--                                    @foreach($errors->all() as $error)--}}
+{{--                                        <li>--}}
+{{--                                            {{ $error }}--}}
+{{--                                        </li>--}}
+{{--                                    @endforeach--}}
+{{--                                </ul>--}}
+                            </div>
+                        </div> <!-- .card -->
+
+                    </div><!--/.col-->
+                </div>
+            @endif
+            <form method="POST" action="" >
+{{--                    @method('PUT')--}}
+                    @csrf
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">{{trans('page-client.clients.showclient')}} </strong>
+                            </div>
+
+                                <!-- Credit Card -->
+                                <div id="pay-invoice">
+                                    <div class="card-body">
+                                        <div class="form-group has-success">
+                                            <label class="required" for="cname" class="control-label mb-1">{{ trans('page-client.clients.fields.cname') }}</label>
+                                            <input id="cname" name="cname" type="text"
+                                                   class="form-control fname valid" value="{{$clientdetails[0]->cname}}" disabled>
+
+                                            <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                                  data-valmsg-replace="true"></span>
+                                            @error('cname')
+                                            <small class="form-text text-danger">{{trans('validation.clients.cname_required')}}</small>
+                                            @enderror
+                                            @error('cname')
+                                            <small class="form-text text-danger">{{trans('validation.clients.cname_unique')}}</small>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group has-success">
+                                            <label class="required" for="moname" class="control-label mb-1">{{trans('page-client.clients.fields.moname')}}</label>
+                                            <input id="moname" name="moname" type="text"
+                                                   class="form-control middle-name valid"
+                                                   value="{{$clientdetails[0]->moname}}" disabled>
+                                            <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                                  data-valmsg-replace="true"></span>
+                                            @error('moname')
+                                            <small class="form-text text-danger">{{trans('validation.clients.moname_required')}}</small>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group has-success">
+                                            <label class="required" for="cadr" class="control-label mb-1">{{trans('page-client.clients.fields.cadr')}}</label>
+                                            <input id="cadr" name="cadr" type="text"
+                                                   class="form-control cadr valid" value="{{$clientdetails[0]->cadr}}" disabled>
+                                            <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                                  data-valmsg-replace="true"></span>
+                                            @error('cadr')
+                                            <small class="form-text text-danger">{{trans('validation.clients.cadr_required')}}</small>
+                                            @enderror
+                                        </div>
+                                        {{--##Region--}}
+                                        <div class="form-group" data-label="1">
+                                            <label class="required" class="control-label col-sm-4" for="creg">{{trans('page-client.clients.fields.creg')}}</label>
+                                            <select id="creg" name="creg" class="form-control p selectionreg"
+                                                    aria-required="true" aria-invalid="false" disabled>
+                                                <option></option>
+                                                @foreach($reglist as $regionlist)
+                                                    @if($regionlist -> id == $clientdetails[0]->creg)
+                                                        <option selected
+                                                                value="{{$regionlist -> id}}">{{$regionlist -> Description}}</option>
+                                                    @else
+                                                        <option
+                                                            value="{{$regionlist -> id}}">{{$regionlist -> Description}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+
+                                            @error('creg')
+                                            <small class="form-text text-danger">{{trans('validation.clients.creg_required')}}</small>
+                                            @enderror
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                {{--##Ctype--}}
+                                                <div class="form-group" data-label="2">
+                                                    <label class="required" class="control-label mb-1" for="cctype">{{trans('page-client.clients.fields.cctype')}}</label>
+                                                    <select id="cctype" name="cctype" class="form-control p selectionctype"
+                                                            aria-required="true" aria-invalid="false" disabled>
+                                                        <option></option>
+                                                        @foreach($ctypelist as $cctypelist)
+                                                            @if($cctypelist -> id == $clientdetails[0]->cctype)
+                                                                <option selected
+                                                                        value="{{$cctypelist -> id}}">{{$cctypelist -> Description}}</option>
+                                                            @else
+                                                                <option
+                                                                    value="{{$cctypelist -> id}}">{{$cctypelist -> Description}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+
+                                                    @error('cctype')
+                                                    <small class="form-text text-danger">{{trans('validation.clients.cctype_required')}}</small>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6">
+                                                {{--##Natio--}}
+                                                <div class="form-group" data-label="3">
+                                                    <label class="required" class="control-label mb-1" for="natio">{{trans('page-client.clients.fields.natio')}}</label>
+                                                    <select id="natio" name="natio" class="form-control p selectionnatio"
+                                                            aria-required="true" aria-invalid="false" disabled>
+                                                        <option></option>
+                                                        @foreach($nlist as $natiolist)
+                                                            @if($natiolist -> id == $clientdetails[0]->natio)
+                                                                <option selected
+                                                                        value="{{$natiolist -> id}}">{{$natiolist -> Description}}</option>
+                                                            @else
+                                                                <option
+                                                                    value="{{$natiolist -> id}}">{{$natiolist -> Description}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+
+                                                    @error('natio')
+                                                    <small class="form-text text-danger">{{trans('validation.clients.natio_required')}}</small>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="cmob"
+                                                           class="required"  class="control-label mb-1">{{trans('page-client.clients.fields.cmob')}}</label>
+                                                    <input id="cmob" name="cmob" class="form-control"
+                                                           aria-required="true" aria-invalid="false" type="text"
+                                                           value="{{$clientdetails[0]->cmob}}" disabled >
+                                                    @error('cmob')
+                                                    <small class="form-text text-danger">{{trans('validation.clients.cmob_required')}}</small>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="cmob1"
+                                                           class="control-label mb-1">{{trans('page-client.clients.fields.cmob1')}}</label>
+                                                    <input id="cmob1" name="cmob1" class="form-control"
+                                                           aria-required="true" aria-invalid="false" type="text"
+                                                           value="{{$clientdetails[0]->cmob1}}" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="cland"
+                                                   class="control-label mb-1">{{trans('page-client.clients.fields.cland')}}</label>
+                                            <input id="cland" name="cland" class="form-control"
+                                                   aria-required="true" aria-invalid="false" type="text"
+                                                   value="{{$clientdetails[0]->cland}}" disabled>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                        </div> <!-- .card -->
+
+                    </div><!--/.col-->
+
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">{{trans('page-client.clients.showclient')}}</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group has-success">
+                                    <label class="required" for="sigil" class="control-label mb-1">{{ trans('page-client.clients.fields.sid') }}</label>
+                                    <input id="sigil" name="sigil" type="text"
+                                           class="form-control fname valid" value="{{$clientdetails[0]->sigil}}" disabled>
+                                    @error('sigil')
+                                    <small class="form-text text-danger">{{trans('validation.clients.sigil_required')}}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        {{--##place--}}
+                                        <div class="form-group" data-label="4">
+                                            <label class="required" class="control-label mb-1" for="place">{{trans('page-client.clients.fields.place')}}</label>
+                                            <select id="place" name="place" class="form-control p selectionplace"
+                                                    aria-required="true" aria-invalid="false" disabled>
+                                                <option></option>
+                                                @foreach($bplacelist as $bdplacelist)
+                                                    @if($bdplacelist -> id == $clientdetails[0]->place)
+                                                        <option selected
+                                                                value="{{$bdplacelist -> id}}">{{$bdplacelist -> Description}}</option>
+                                                    @else
+                                                        <option
+                                                            value="{{$bdplacelist -> id}}">{{$bdplacelist -> Description}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+
+                                            @error('place')
+                                            <small class="form-text text-danger">{{trans('validation.clients.place_required')}}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-6">
+                                        <div class="form-group has-success">
+                                            <label class="required" for="birthdate"
+                                                   class="control-label mb-1">{{trans('page-client.clients.fields.birthdate')}}</label>
+                                            <input id="birthdate" name="birthdate" type="date"
+                                                   class="form-control birthdate valid"
+                                                   value="{{$clientdetails[0]->birthdate}}" disabled>
+                                            @error('birthdate')
+                                            <small class="form-text text-danger">{{trans('validation.clients.birthdate_required')}}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="form-group has-success">
+                                    <label for="passnum" class="control-label mb-1">{{ trans('page-client.clients.fields.passnum') }}</label>
+                                    <input id="passnum" name="passnum" type="text"
+                                           class="form-control fname valid" value="{{$clientdetails[0]->passnum}}" disabled>
+                                    @error('passnum')
+                                    <small class="form-text text-danger">{{trans('validation.clients.passnum_unique')}}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        {{--##place--}}
+                                        <div class="form-group" data-label="5">
+                                            <label class="required" class="control-label mb-1" for="passplace">{{trans('page-client.clients.fields.passplace')}}</label>
+                                            <select id="passplace" name="passplace" class="form-control p selectionpassplace"
+                                                    aria-required="true" aria-invalid="false" disabled>
+                                                <option></option>
+                                                @foreach($passplacelist as $pplacelist)
+                                                    @if($pplacelist -> id == $clientdetails[0]->passplace)
+                                                        <option selected
+                                                                value="{{$pplacelist -> id}}">{{$pplacelist -> Description}}</option>
+                                                    @else
+                                                        <option
+                                                            value="{{$pplacelist -> id}}">{{$pplacelist -> Description}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-6">
+                                        <div class="form-group has-success">
+                                            <label class="required" for="passdate"
+                                                   class="control-label mb-1">{{trans('page-client.clients.fields.passdate')}}</label>
+                                            <input id="passdate" name="passdate" type="date"
+                                                   class="form-control passdate valid"
+                                                   value="{{$clientdetails[0]->passdate}}" disabled>
+                                            @error('passdate')
+                                            <small class="form-text text-danger">{{trans('validation.clients.passdate_required')}}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                            <div class="card-footer">
+                                <div class="form-group">
+                                    <a class="btn btn-danger" href="{{ route("clients-list") }}">
+                                        {{ trans('global.close') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </form>
+
+        </div><!-- .animated -->
+        <div class="hide" id="hidden-values">
+            <input id="def_quick_add" type="hidden" value="{{url('/pages/addNewValueDEF')}}">
+{{--            <input id="branch_id" type="hidden" name="branch_id" value="{{$brID}}">--}}
+{{--            <input id="natio_quick_add" type="hidden" value="{{url('/addNewValueNATIO')}}">--}}
+{{--            <input id="place_quick_add" type="hidden" value="{{url('/addNewValuePLACE')}}">--}}
+{{--            <input id="passplace_quick_add" type="hidden" value="{{url('/addNewValuePASSPLACE')}}">--}}
+        </div>
+    </div><!-- .content -->
+
+@endsection
+
+@push('js_content')
+    <script src={{ asset('adminassets/js/custom/newclient.js') }}></script>
+    <script src={{ asset("adminassets/vendor/select2/select3.min.js") }}></script>
+@endpush
+
+
+
