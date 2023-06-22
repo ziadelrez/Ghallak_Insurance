@@ -2,7 +2,7 @@
 
 
 @section('title')
-    {{ trans('expenses.Expenses.title') }}
+    {{ trans('booking.Bookings.title') }}
 @endsection
 
 @push('css_content')

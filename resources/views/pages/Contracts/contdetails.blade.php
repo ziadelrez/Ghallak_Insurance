@@ -30,7 +30,7 @@
 {{--                        <br><br><a href="{{ route('contract-client', $clientid) }}"><i class="fas fa-fast-backward"></i>  {{ trans('global.backtocontractdet') }}</a></h6>--}}
 
                     <div class="row">
-                        <div class="col-md-8 col-sm-8 col-xs-12">
+                        <div class="col-md-8 col-sm-9 col-xs-12">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{{ route('contract-client', $clientid) }}">{{ trans('global.backtocontractdet') }}</a></li>
@@ -38,8 +38,8 @@
                                 </ol>
                             </nav>
                         </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                            <a class="btn btn-primary btn-lg" href="{{ route('contract-car-details.create', $contract_id) }}">
+                        <div class="col-md-4 col-sm-3 col-xs-12">
+                            <a class="btn btn-primary btn-lg btn-block" href="{{ route('contract-ins-details.create', $contract_id) }}">
                                 <i class="fas fa-plus-circle"></i>
                                 {{ trans('page-contract.contract.buttons.btnaddcontactdet') }}
                             </a>
@@ -59,52 +59,42 @@
                         <table class="table table-bordered" id="table" width="100%" cellspacing="0">
                             <thead>
                             <tr>
-                                <th width="150px" style="display:none;" >{{ trans('page-contract.contract.tables.id') }}</th>
-                                <th class="text-center align-middle" width="100px">{{ trans('page-contract.contract.tables.cartype') }}</th>
-                                <th class="text-center align-middle" width="150px">{{ trans('page-contract.contract.tables.carname') }}</th>
-                                <th class="text-center align-middle" width="100px">{{ trans('page-contract.contract.tables.carnumber') }}</th>
-                                <th class="text-center align-middle">{{ trans('page-contract.contract.tables.carcolor') }}</th>
-                                <th class="text-center align-middle">{{ trans('page-contract.contract.tables.cardays') }}</th>
-                                <th class="text-center align-middle">{{ trans('page-contract.contract.tables.carrate') }}</th>
-                                <th class="text-center align-middle">{{ trans('page-contract.contract.tables.cartotal') }}</th>
-                                <th class="text-center align-middle" width="50px">{{ trans('page-contract.contract.tables.carcurr') }}</th>
-                                <th class="text-center align-middle" width="250px">{{ trans('page-contract.contract.tables.actions') }}</th>
+                                <th width="150px" style="display:none;">{{ trans('page-contract.contract.tables.id') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.compname') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.carnameins') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.maidname') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.insname') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.fromdate') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.todate') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.dayscount') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.cost') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.curr') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.actions') }}</th>
                             </tr>
                             </thead>
 
                             <tbody>
                             @foreach($contractdetlist as $colist)
                                 <tr class="codetrrows{{$colist -> codetid}}">
-                                    <td style="display:none;" >{{$colist -> codetid}}</td>
-                                    <td class="text-center align-middle" width="100px">{{$colist -> cartype}}</td>
-                                    <td class="text-center align-middle" width="150px">{{$colist -> carname}}</td>
-                                    <td class="text-center align-middle" width="100px">{{$colist -> carnumber}}</td>
-                                    <td class="text-center align-middle">{{$colist -> carcolor}}</td>
-                                    <td class="text-center align-middle">{{$colist -> cardays}}</td>
-                                    <td class="text-center align-middle">{{$colist -> carrate}}</td>
-                                    <td class="text-center align-middle">{{$colist -> cartotal}}</td>
-                                    <td class="text-center align-middle" width="50px">{{$colist -> carcurr}}</td>
-                                    <td class="text-center align-middle" width="250px">
-{{--                                        {{ route('contract-details',$colist -> codetid)}}--}}
-                                        <a href="" class="btn btn-outline-primary btn-sm" data-id="{{$colist -> codetid}}" title="{{ trans('page-contract.contract.titles.printcontract') }}">
-                                            <i class="fa fa-print"></i>
-                                        </a>
-                                        <button class="create-modal btn btn-success btn-sm" title="{{ trans('page-contract.contract.titles.carbacktooffice') }}" data-id="{{$colist -> codetid}}" data-title="{{$colist->carname}}" data-carid="{{$colist->car_id}}">
-                                            <i class="fas fa-arrow-alt-circle-left"></i>
-                                        </button>
+                                        <td style="display:none;" >{{$colist -> codetid}}</td>
+                                        <td class="text-center align-middle text-nowrap ">{{$colist -> compname}}</td>
+                                        <td class="text-center align-middle text-nowrap ">{{$colist -> carname}} - {{$colist -> carnumber}}</td>
+                                        <td class="text-center align-middle text-nowrap ">{{$colist -> maidname}} - {{$colist -> passport}}</td>
+                                        <td class="text-center align-middle text-nowrap ">{{$colist -> insname}}</td>
+                                        <td class="text-center align-middle text-nowrap ">{{$colist -> sdate}}</td>
+                                        <td class="text-center align-middle text-nowrap " >{{$colist -> edate}}</td>
+                                        <td class="text-center align-middle text-nowrap " >{{$colist -> days}}</td>
+                                        <td class="text-center align-middle text-nowrap ">{{$colist -> totalcost}}</td>
+                                        <td class="text-center align-middle text-nowrap ">{{$colist -> currname}}</td>
+                                        <td class="text-center align-middle text-nowrap" >
+                                            <a class="btn btn-warning btn-sm" title="{{ trans('page-contract.contract.titles.edit') }}" href="{{ route('contract-details.edit', $colist->codetid) }}">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
 
-                                        <a class="btn btn-primary btn-sm" title="{{ trans('page-contract.contract.titles.actionscdet') }}" href="{{ route('contract-procedures.create', $colist->codetid) }}">
-                                            <i class="fa fa-list"></i>
-                                        </a>
-
-                                        <a class="btn btn-warning btn-sm" title="{{ trans('page-contract.contract.titles.edit') }}" href="{{ route('contract-car-details.edit', $colist->codetid) }}">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-
-                                        <button class="delete-modal btn btn-danger btn-sm" title="{{ trans('page-contract.contract.titles.delete') }}" data-id="{{$colist -> codetid}}" data-title="{{$colist->carname}}" data-carid="{{$colist->car_id}}">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
+                                            <button class="delete-modal btn btn-danger btn-sm" title="{{ trans('page-contract.contract.titles.delete') }}" data-id="{{$colist -> codetid}}" data-title="{{$colist->carname}}" >
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -199,6 +189,17 @@
                                     {{--                                            @enderror--}}
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="form-group has-success">
+                            <label  for="sumtotal" class="control-label mb-1">{{trans('page-contract.contract.fields.sumtotal')}}</label>
+                            <input id="sumtotal" name="sumtotal" type="number"
+                                   class="form-control sumtotal valid" value="0">
+                            <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                  data-valmsg-replace="true"></span>
+                            {{--                                    @error('hcost')--}}
+                            {{--                                    <small class="form-text text-danger">{{trans('validation.contractsdet.hcost_required')}}</small>--}}
+                            {{--                                    @enderror--}}
                         </div>
 
                         {{--##Car Back--}}

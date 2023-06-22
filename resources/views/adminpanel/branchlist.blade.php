@@ -46,6 +46,8 @@
                             <tr>
                                 <th width="150px" style="display:none;" >{{ trans('page-branch.pages.tables.id') }}</th>
                                 <th>{{ trans('page-branch.pages.tables.name') }}</th>
+                                <th>{{ trans('page-branch.pages.tables.adr') }}</th>
+                                <th>{{ trans('page-branch.pages.tables.type') }}</th>
                                 <th class="text-center" width="150px">{{ trans('page-branch.pages.tables.actions') }}</th>
                                 @can('user_access')
                                 <th class="text-center" width="150px">{{ trans('page-branch.pages.tables.users') }}</th>
@@ -57,7 +59,9 @@
                             @foreach($brlist as $blist)
                                 <tr class="brrows{{$blist -> brid}}">
                                     <td style="display:none;" >{{$blist -> brid}}</td>
-                                    <td>{{$blist -> brname}} - {{$blist -> locname}}</td>
+                                    <td>{{$blist -> brname}}</td>
+                                    <td>{{$blist -> locname}}</td>
+                                    <td>{{$blist -> dealertype}}</td>
                                     <td class="text-center">
                                         <button class="edit-modal btn btn-warning btn-sm" data-id="{{$blist->brid}}" data-title="{{$blist->brname}}" >
                                             <i class="fa fa-edit"></i>
@@ -150,7 +154,21 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="brtype">{{ trans('page-branch.pages.fields.brtype') }} :</label>
+                            <select id="brtype" name="brtype" class="form-control p selectionbrtype"
+                                    aria-required="true" aria-invalid="false">
+                                <option></option>
+                                {{--                                    <option value="" disabled selected hidden>أدخل مكان الفرع</option>--}}
+                                @foreach($brtype as $brtypelist)
+                                    <option value="{{$brtypelist -> id}}">{{$brtypelist -> dealertype}}</option>
+                                @endforeach
+                            </select>
 
+                            <div class="alert alert-danger" id="err_details_brtype" style="display:none">
+
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -242,6 +260,18 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="editbrtype">{{ trans('page-branch.pages.fields.brtype') }} :</label>
+                            <select id="editbrtype" name="editbrtype" class="form-control p selectionbrtype"
+                                    aria-required="true" aria-invalid="false">
+                                <option></option>
+                                @foreach($brtype as $brtypelist)
+                                    <option value="{{$brtypelist -> id}}">{{$brtypelist -> dealertype}}</option>
+                                @endforeach
+                            </select>
+                            <div class="alert alert-danger" id="err_details_editbrtype" style="display:none"></div>
                         </div>
                     </form>
                     {{-- Form Delete Post --}}

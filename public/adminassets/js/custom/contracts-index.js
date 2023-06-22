@@ -3,13 +3,19 @@ $(document).ready(function () {
         placeholder: "إختر إسم الزبون",
         allowClear: true
     });
+
+    $(".selectionliplace2").select2({
+        placeholder: "إختر مكان إصدار رخصة القيادة",
+        allowClear: true
+    });
+
 });
 $(document).on('click','.create-modal', function() {
     $('#create').modal('show');
     $('#codate').val('');
     $('.form-horizontal').show();
-    $('.modal-title').text('إضافة عقد إيجار سيارة جديد');
-    console.log($('input[name=client_id]').val())
+    $('.modal-title').text('إضافة عقد تأمين جديد');
+    // console.log($('input[name=client_id]').val())
 });
 $("#add").click(function() {
     $.ajax({
@@ -20,9 +26,13 @@ $("#add").click(function() {
             'client' : $('input[name=client_id]').val(),
             'cocode': '',
             'codate': $('input[name=codate]').val(),
-            'cocars': '',
+            'coinscount': '',
+            'coinsname': '',
             'coamount': '',
-            'cocurr': ''
+            'coamountlbp': '',
+            'cocurr': '',
+            'cocurrlbp': '',
+            'codestr': ''
         },
         success: function(data){
             // console.log(data)
@@ -40,13 +50,15 @@ $("#add").click(function() {
                     '<td style="display:none;">' + data.id + '</td>'+
                     '<td class="text-center" style="vertical-align: middle" width="100px">' + data.cocode  + '</td>'+
                     '<td class="text-center" style="vertical-align: middle" width="150px">' + data.codate  + '</td>'+
-                    '<td class="text-center" style="vertical-align: middle" width="100px">' + data.cocars  + '</td>'+
-                    '<td class="text-center" style="vertical-align: middle" width="150px">' + data.coamount  + '</td>'+
-                    '<td class="text-center" style="vertical-align: middle" width="80px">' + data.cocurr  + '</td>'+
-                    '<td class="text-center" >' +
-                    '<a href="'+ $('#cdetails').val() + "/" + data.id +'" class="btn btn-info btn-sm" title="' + $('#t1').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-car"></i> </a>' + ' ' +
-                    '<button class="create-modal-li btn btn-secondary btn-sm" title="' + $('#t2').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-id-card"></i> </button>' + ' ' +
-                    '<button class="btn btn-success btn-sm" title="' + $('#t3').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-dollar-sign"></i> </button>' + '</td>'+
+                    '<td class="text-center" style="vertical-align: middle" width="150px">' + data.codestr  + '</td>'+
+                    '<td class="text-center" style="vertical-align: middle" width="100px">' + data.coinscount  + '</td>'+
+                    '<td class="text-center" style="vertical-align: middle" width="250px">' + data.coinsname  + '</td>'+
+                    '<td class="text-center" style="vertical-align: middle" width="350px">' + data.coamount + ' , ' + data.cocurr  + '</td>'+
+                    '<td class="text-center" style="vertical-align: middle" width="350px">' + data.coamountlbp + ' , ' + data.cocurrlbp  + '</td>'+
+                    '<td class="text-center" width="100px">' +
+                    '<a href="'+ $('#cdetails').val() + "/" + data.id +'" class="btn btn-info btn-sm" title="' + $('#t1').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-user-shield"></i> </a>' + ' ' +
+                    '<a href="'+ $('#printbilldetails').val() + "/" + data.id +'" target="_blank" class="btn btn-outline-primary btn-sm" title="' + $('#tprint').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-money-bill-alt"></i> </a>' + ' ' +
+                    // '<button class="btn btn-success btn-sm" title="' + $('#t3').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-dollar-sign"></i> </button>' + '</td>'+
                     '<td class="text-center" >' +
                     '<button class="edit-modal btn btn-warning btn-sm" title="' + $('#t4').val() + '" data-id='+ data.id + ' data-cocode=' + data.cocode  + ' data-codate=' + data.codate +' ><i class="fa fa-edit"></i> </button>'  + ' ' +
                     '<button class="delete-modal btn btn-danger btn-sm" title="' + $('#t5').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-trash"></i> </button>' + '</td>'+
@@ -87,9 +99,13 @@ $('.modal-footer').on('click', '.edit', function() {
             'id': $('#fid').val(),
             'cocode' : '',
             'codate': $('input[name=editcodate]').val(),
-            'cocars': '',
+            'coinscount': '',
+            'coinsname': '',
             'coamount': '',
-            'cocurr': ''
+            'coamountlbp': '',
+            'cocurr': '',
+            'cocurrlbp': '',
+            'codestr': ''
         },
         success: function(data) {
             if ((data.errors)) {
@@ -104,13 +120,15 @@ $('.modal-footer').on('click', '.edit', function() {
                         '<td style="display:none;">' + data.id + '</td>'+
                         '<td class="text-center" style="vertical-align: middle" width="100px">' + data.cocode  + '</td>'+
                         '<td class="text-center" style="vertical-align: middle" width="150px">' + data.codate  + '</td>'+
-                        '<td class="text-center" style="vertical-align: middle" width="100px">' + data.cocars  + '</td>'+
-                        '<td class="text-center" style="vertical-align: middle" width="150px">' + data.coamount  + '</td>'+
-                        '<td class="text-center" style="vertical-align: middle" width="80px">' + data.cocurr  + '</td>'+
-                        '<td class="text-center" >' +
-                        '<a href="'+ $('#cdetails').val() + "/" + data.id +'" class="btn btn-info btn-sm" title="' + $('#t1').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-car"></i> </a>' + ' ' +
-                        '<button class="create-modal-li btn btn-secondary btn-sm" title="' + $('#t2').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-id-card"></i> </button>' + ' ' +
-                        '<button class="btn btn-success btn-sm" title="' + $('#t3').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-dollar-sign"></i> </button>' + '</td>'+
+                        '<td class="text-center" style="vertical-align: middle" width="150px">' + data.codestr  + '</td>'+
+                    '<td class="text-center" style="vertical-align: middle" width="100px">' + data.coinscount  + '</td>'+
+                    '<td class="text-center" style="vertical-align: middle" width="250px">' + data.coinsname  + '</td>'+
+                    '<td class="text-center" style="vertical-align: middle" width="350px">' + data.coamount + ' , ' + data.cocurr  + '</td>'+
+                    '<td class="text-center" style="vertical-align: middle" width="350px">' + data.coamountlbp + ' , ' + data.cocurrlbp  + '</td>'+
+                        '<td class="text-center" width="100px">' +
+                        '<a href="'+ $('#cdetails').val() + "/" + data.id +'" class="btn btn-info btn-sm" title="' + $('#t1').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-user-shield"></i> </a>' + ' ' +
+                        '<a href="'+ $('#printbilldetails').val() + "/" + data.id +'" target="_blank" class="btn btn-outline-primary btn-sm" title="' + $('#tprint').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-money-bill-alt"></i> </a>' + ' ' +
+                        // '<button class="btn btn-success btn-sm" title="' + $('#t3').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-dollar-sign"></i> </button>' + '</td>'+
                         '<td class="text-center" >' +
                         '<button class="edit-modal btn btn-warning btn-sm" title="' + $('#t4').val() + '" data-id='+ data.id + ' data-cocode=' + data.cocode  + ' data-codate=' + data.codate +' ><i class="fa fa-edit"></i> </button>'  + ' ' +
                         '<button class="delete-modal btn btn-danger btn-sm" title="' + $('#t5').val() + '" data-id='+ data.id + ' data-title=' + data.cocode + ' ><i class="fa fa-trash"></i> </button>' + '</td>'+
@@ -129,7 +147,7 @@ $(document).on('click', '.delete-modal', function() {
     $('.actionBtn').removeClass('btn-success');
     $('.actionBtn').addClass('btn-danger');
     $('.actionBtn').addClass('delete');
-    $('.modal-title').text('إالغاء عقد التأجير');
+    $('.modal-title').text('إالغاء عقد التأمين');
     $('.id').text($(this).data('id'));
     $('.deleteContent').show();
     $('.form-horizontal').hide();

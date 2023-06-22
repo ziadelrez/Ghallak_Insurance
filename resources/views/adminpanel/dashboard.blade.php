@@ -26,253 +26,252 @@
 {{--                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>--}}
             </div>
 
-            <!-- Content Row -->
-            <div class="row">
-                <!-- Total Cars -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-car fa-2x " style="color:#dd2023;"></i> {{trans('dashboard.dashboard.totalcars')}}</div>
-                                    <ul class="list-group">
-                                    @foreach($totalcars as $tcars)
-{{--                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>--}}
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                {{$tcars -> brname}}
-                                                <span class="badge badge-primary badge-pill">  {{$tcars -> carid}}</span>
-                                            </li>
-                                    @endforeach
-                                    </ul>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Total Clients -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-user-alt fa-2x " style="color:#4edd34;"></i> {{trans('dashboard.dashboard.totalclients')}}</div>
-                                    <ul class="list-group">
-                                        @foreach($totalclients as $tclient)
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                {{trans('dashboard.dashboard.totalclients_lbl')}}
-                                                <span class="badge badge-primary badge-pill">  {{$tclient -> id}}</span>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Total Contract -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-file-signature fa-2x " style="color:#2462dd;"></i> {{trans('dashboard.dashboard.totalcontract')}}</div>
-                                    <ul class="list-group">
-                                        @foreach($totalcontracts as $tcontract)
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                {{$tcontract -> brname}}
-                                                <span class="badge badge-primary badge-pill">  {{$tcontract -> contid}}</span>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Total Booking -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-calendar-check fa-2x " style="color:#d6d46d;"></i> {{trans('dashboard.dashboard.totalbooking')}}</div>
-                                    <ul class="list-group">
-                                        @foreach($totalbooking as $tbooking)
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                {{$tbooking -> brname}}
-                                                <span class="badge badge-primary badge-pill">  {{$tbooking -> bookid}}</span>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <!-- Cars Taken -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fab fa-algolia fa-2x " style="color:#38d6c4;"></i> {{trans('dashboard.dashboard.takencars')}}</div>
-                                    <ul class="list-group">
-                                        @foreach($takencars as $tcars)
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                {{$tcars -> brname}}
-                                                <span class="badge badge-primary badge-pill">  {{$tcars -> carid}}</span>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cars Available -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-hand-point-left fa-2x" style="color:#d69625;"></i> {{trans('dashboard.dashboard.availablecars')}}</div>
-                                    <ul class="list-group">
-                                        @foreach($availablecars as $tcars)
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                {{$tcars -> brname}}
-                                                <span class="badge badge-primary badge-pill">  {{$tcars -> carid}}</span>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cars Come Today -->
-                <div class="col-xl-6 col-md-6 mb-4">
-                    <div class="card border-left-info shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-arrow-alt-circle-left fa-2x " style="color:#af9cd6;"></i> {{trans('dashboard.dashboard.carscometoday')}} : {{$ldate}}</div>
-                                    <ul class="list-group">
-                                        @foreach($comingcars as $ccars)
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <span >{{$ccars -> brname}} </span>
-                                                {{$ccars -> carname}} , {{$ccars -> timein}}
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-
-            <!-- Content Row -->
-
-{{--            <div class="row">--}}
-
-{{--                <!-- Area Chart -->--}}
-{{--                <div class="col-xl-8 col-lg-7">--}}
-{{--                    <div class="card shadow mb-4">--}}
-{{--                        <!-- Card Header - Dropdown -->--}}
-{{--                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">--}}
-{{--                            <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>--}}
-{{--                            <div class="dropdown no-arrow">--}}
-{{--                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-{{--                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>--}}
-{{--                                </a>--}}
-{{--                                <div class="dropdown-menu dropdown-menu-left shadow animated--fade-in" aria-labelledby="dropdownMenuLink">--}}
-{{--                                    <div class="dropdown-header">Dropdown Header:</div>--}}
-{{--                                    <a class="dropdown-item" href="#">Action</a>--}}
-{{--                                    <a class="dropdown-item" href="#">Another action</a>--}}
-{{--                                    <div class="dropdown-divider"></div>--}}
-{{--                                    <a class="dropdown-item" href="#">Something else here</a>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <!-- Card Body -->--}}
-{{--                        <div class="card-body">--}}
-{{--                            <div class="chart-area">--}}
-{{--                                <canvas id="myAreaChart"></canvas>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
-{{--                <!-- Pie Chart -->--}}
-{{--                <div class="col-xl-4 col-lg-5">--}}
-{{--                    <div class="card shadow mb-4">--}}
-{{--                        <!-- Card Header - Dropdown -->--}}
-{{--                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">--}}
-{{--                            <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>--}}
-{{--                            <div class="dropdown no-arrow">--}}
-{{--                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-{{--                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>--}}
-{{--                                </a>--}}
-{{--                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">--}}
-{{--                                    <div class="dropdown-header">Dropdown Header:</div>--}}
-{{--                                    <a class="dropdown-item" href="#">Action</a>--}}
-{{--                                    <a class="dropdown-item" href="#">Another action</a>--}}
-{{--                                    <div class="dropdown-divider"></div>--}}
-{{--                                    <a class="dropdown-item" href="#">Something else here</a>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <!-- Card Body -->--}}
-{{--                        <div class="card-body">--}}
-{{--                            <div class="chart-pie pt-4 pb-2">--}}
-{{--                                <canvas id="myPieChart"></canvas>--}}
-{{--                            </div>--}}
-{{--                            <div class="mt-4 text-center small">--}}
-{{--                    <span class="mr-2">--}}
-{{--                      <i class="fas fa-circle text-primary"></i> Direct--}}
-{{--                    </span>--}}
-{{--                                <span class="mr-2">--}}
-{{--                      <i class="fas fa-circle text-success"></i> Social--}}
-{{--                    </span>--}}
-{{--                                <span class="mr-2">--}}
-{{--                      <i class="fas fa-circle text-info"></i> Referral--}}
-{{--                    </span>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-            <div class="card">
-                <div class="card-header"><i class="fas fa-list-ol fa-2x " style="color:#d6d336;"></i> {{trans('dashboard.dashboard.topclients')}}</div>
-                <div class="card-body">
+                @can('all_access')
+                    <!-- Content Row -->
                     <div class="row">
-                            @foreach($topclients as $tclients)
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <div class="card text-white bg-secondary">
-                                        <div class="card-header text-black-50">{{$tclients->cname}}</div>
-                                        <img class="card-img-top img-fluid" src="{{asset("files/images/avatar/user-male.png")}}" style="width: auto; height: auto;" class="img-circle" />
-                                        <div class="card-body">
-                                            <h4 class="card-title">{{$tclients->carname}}</h4>
-                                            <p class="card-text">{{$tclients->carnumber}} - {{$tclients->carcolor}} , {{$tclients->carmodel}}</p>
+                        <!-- Total Companies -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-right-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-shield-alt fa-2x " style="color:#2462dd;"></i> {{trans('dashboard.dashboard.totalcompanies')}}</div>
+                                            <ul class="list-group">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.comp_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$totalcomp[0] -> id}}</span>
+                                                    </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Total Contract -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-right-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-file-signature fa-2x " style="color:#dd151b;"></i> {{trans('dashboard.dashboard.totalcontract')}}</div>
+                                            <ul class="list-group">
+                                                @foreach($totalcontracts as $tcontract)
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{$tcontract -> insname}}
+                                                        <span class="badge badge-primary badge-pill">  {{$tcontract -> contdetid}}</span>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Persons -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-right-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-user-alt fa-2x " style="color:#4edd34;"></i> {{trans('dashboard.dashboard.clients')}}</div>
+                                            <ul class="list-group">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.office_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$offices[0]->id}}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.nclients_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$nclients[0]->id}}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.brokers_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$brokers[0]->id}}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.experts_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$experts[0]->id}}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.garages_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$garages[0]->id}}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.employees_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$employees[0]->id}}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.apersons_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$apersons[0]->id}}</span>
+                                                    </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+
+                    <!-- Total ِAccident -->
+                    <div class="row">
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-right-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-car-crash fa-2x " style="color:#d6d46d;"></i> {{trans('dashboard.dashboard.totalaccident')}}</div>
+                                            <ul class="list-group">
+                                                @foreach($totalacc as $tacc)
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{$tacc -> accidenttypename}}
+                                                        <span class="badge badge-primary badge-pill">  {{$tacc -> accid}}</span>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                @elsecan('garages_access')
+                        <div class="effect-box vintage">
+                            <h1>{{$branches[0]->name}}</h1>
+                        </div>
+                @elsecan('brokers_access')
+                    <!-- Content Row -->
+                        <div class="row">
+                            <!-- Total Companies -->
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-shield-alt fa-2x " style="color:#2462dd;"></i> {{trans('dashboard.dashboard.totalcompanies')}}</div>
+                                                <ul class="list-group">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.comp_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$totalcomp[0] -> id}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Total Contract -->
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-file-signature fa-2x " style="color:#dd151b;"></i> {{trans('dashboard.dashboard.totalcontract')}}</div>
+                                                <ul class="list-group">
+                                                    @foreach($totalcontracts as $tcontract)
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                            {{$tcontract -> insname}}
+                                                            <span class="badge badge-primary badge-pill">  {{$tcontract -> contdetid}}</span>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Total Persons -->
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-user-alt fa-2x " style="color:#4edd34;"></i> {{trans('dashboard.dashboard.clients')}}</div>
+                                                <ul class="list-group">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.office_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$offices[0]->id}}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.nclients_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$nclients[0]->id}}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.brokers_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$brokers[0]->id}}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.experts_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$experts[0]->id}}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.garages_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$garages[0]->id}}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.employees_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$employees[0]->id}}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{trans('dashboard.dashboard.apersons_lbl')}}
+                                                        <span class="badge badge-primary badge-pill">  {{$apersons[0]->id}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total ِAccident -->
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xl-right font-weight-bold text-primary text-uppercase mb-1"><i class="fas fa-car-crash fa-2x " style="color:#d6d46d;"></i> {{trans('dashboard.dashboard.totalaccident')}}</div>
+                                                <ul class="list-group">
+                                                    @foreach($totalacc as $tacc)
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                            {{$tacc -> accidenttypename}}
+                                                            <span class="badge badge-primary badge-pill">  {{$tacc -> accid}}</span>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    @endcan
+
+
+{{--            <div class="card">--}}
+{{--                <div class="card-header"><i class="fas fa-list-ol fa-2x " style="color:#d6d336;"></i> {{trans('dashboard.dashboard.topclients')}}</div>--}}
+{{--                <div class="card-body">--}}
+{{--                    <div class="row">--}}
+{{--                            @foreach($topclients as $tclients)--}}
+{{--                                <div class="col-md-4 col-sm-4 col-xs-12">--}}
+{{--                                    <div class="card text-white bg-secondary">--}}
+{{--                                        <div class="card-header text-black-50">{{$tclients->cname}}</div>--}}
+{{--                                        <img class="card-img-top img-fluid" src="{{asset("files/images/avatar/user-male.png")}}" style="width: auto; height: auto;" class="img-circle" />--}}
+{{--                                        <div class="card-body">--}}
+{{--                                            <h4 class="card-title">{{$tclients->carname}}</h4>--}}
+{{--                                            <p class="card-text">{{$tclients->carnumber}} - {{$tclients->carcolor}} , {{$tclients->carmodel}}</p>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            @endforeach--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
 
     </div>

@@ -3,9 +3,9 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('/')}}">
         <div class="sidebar-brand-icon rotate-n-1">
-            <i class="fas fa-car"></i>
+            <i class="fas fa-user-shield"></i>
         </div>
-        <div class="sidebar-brand-text mx-30"> Najib Rent <br> Cars  </div>
+        <div class="sidebar-brand-text mx-30"> Hallak Insurance</div>
     </a>
 
     <!-- Divider -->
@@ -86,13 +86,23 @@
                     <a class="collapse-item" href="{{ route('branches-list') }}"><i class="fas fa-code-branch"></i>{{ trans('page-branch.menu.branch-list') }}</a>
                 @endcan
 
+                @can('instype_access')
+                    <a class="collapse-item" href="{{ route('insurances-list') }}"><i class="fas fa-shield-alt"></i>{{ trans('page-insurance-names.menu.insurance-list') }}</a>
+                @endcan
+
+                @can('companies_access')
+                    <a class="collapse-item" href="{{ route('companies-list') }}"><i class="fas fa-building"></i>{{ trans('page-companies.menu.companies-list') }}</a>
+                @endcan
+
             </div>
         </div>
         @endcan
     </li>
 
      <!-- Divider -->
-    <hr class="sidebar-divider">
+    @can('dataentry_access')
+         <hr class="sidebar-divider">
+    @endcan
 
        <!-- Nav Item - Pages Collapse Menu -->
 {{--    <li class="nav-item">--}}
@@ -123,21 +133,45 @@
             <span>{{ trans('page-client.menu.clients') }}</span></a>
         @endcan
     </li>
+
     <li class="nav-item">
-        @can('cars_access')
-            <a class="nav-link" href="{{ route("cars-list") }}">
-                <i class="fas fa-car"></i>
-                <span>{{ trans('page-cars.menu.cars') }}</span></a>
+        @can('contract_access')
+            <a class="nav-link" href="{{ route("contracts-summary") }}">
+                <i class="fas fa-file-signature"></i>
+                <span>{{ trans('global.contract') }}</span></a>
         @endcan
     </li>
 
-{{--    <li class="nav-item">--}}
-{{--        @can('contract_access')--}}
-{{--            <a class="nav-link" href="{{ route("contracts-list") }}">--}}
+{{--    @can('accident_access')--}}
+{{--        <li class="nav-item">--}}
+{{--            <a class="nav-link" href="{{ route("contracts-summary") }}">--}}
 {{--                <i class="fas fa-file-signature"></i>--}}
 {{--                <span>{{ trans('global.contract') }}</span></a>--}}
-{{--        @endcan--}}
-{{--    </li>--}}
+{{--        </li>--}}
+
+{{--        <li class="nav-item">--}}
+{{--              <a class="nav-link" href="{{ route("accidents-list") }}">--}}
+{{--                    <i class="fas fa-car-crash"></i>--}}
+{{--                    <span>{{ trans('global.accident') }}</span></a>--}}
+{{--        </li>--}}
+
+{{--    @endcan--}}
+
+    <li class="nav-item">
+        @can('accident_access')
+            <a class="nav-link" href="{{ route("accidents-list") }}">
+                <i class="fas fa-car-crash"></i>
+                <span>{{ trans('global.accident') }}</span></a>
+        @endcan
+    </li>
+
+    <li class="nav-item">
+        @can('payments_access')
+            <a class="nav-link" href="{{ route("partners-payments") }}">
+                <i class="fas fa-dollar-sign"></i>
+                <span>{{ trans('global.ppayments') }}</span></a>
+        @endcan
+    </li>
 
     <li class="nav-item">
         @can('expenses_access')
@@ -147,13 +181,22 @@
         @endcan
     </li>
 
+
     <li class="nav-item">
-        @can('booking_access')
-            <a class="nav-link" href="{{ route("bookings-list") }}">
-                <i class="fas fa-book"></i>
-                <span>{{ trans('global.booking') }}</span></a>
+        @can('sms_access')
+            <a class="nav-link" href="{{ route("reminders") }}">
+                <i class="fas fa-sms"></i>
+                <span>{{ trans('global.sms') }}</span></a>
         @endcan
     </li>
+
+{{--    <li class="nav-item">--}}
+{{--        @can('booking_access')--}}
+{{--            <a class="nav-link" href="{{ route("bookings-list") }}">--}}
+{{--                <i class="fas fa-book"></i>--}}
+{{--                <span>{{ trans('global.booking') }}</span></a>--}}
+{{--        @endcan--}}
+{{--    </li>--}}
 
 
     <!-- Nav Item - Tables -->
@@ -162,41 +205,108 @@
 {{--            <i class="fas fa-fw fa-table"></i>--}}
 {{--            <span>Tables</span></a>--}}
 {{--    </li>--}}
+
     <hr class="sidebar-divider">
+
     <li class="nav-item">
-        @can('report_access')
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-chart-bar"></i>
-            <span>{{ trans('global.reports') }}</span>
-        </a>
-
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                @can('incomingcars_access')
-                    <a class="collapse-item" href="{{ route('gdef-list') }}"> <i class="fas fa-th-list"></i>{{ trans('global.incomingcars') }}</a>
-                @endcan
-
-                @can('rentedcars_access')
-                    <a class="collapse-item" href="{{ route('branches-list') }}"><i class="fas fa-th-list"></i>{{ trans('global.rentedcars') }}</a>
-                @endcan
-
-                @can('booking_access')
-                    <a class="collapse-item" href="{{ route('bookings-list') }}"> <i class="fas fa-th-list"></i>{{ trans('global.bookedcars') }}</a>
-                @endcan
-
-                @can('speedreport_access')
-                    <a class="collapse-item" href=""><i class="fas fa-th-list"></i>{{ trans('global.speedreport') }}</a>
-                @endcan
-
-            </div>
-        </div>
-        @endcan
+            @can('cashier_transaction_access')
+                     <a class="nav-link" href="{{ route('transactionscahier-list') }}" target="_blank">
+                    <i class="fas fa-th-list"></i>
+                    <span>{{ trans('global.transactionscahier') }}</span></a>
+            @endcan
     </li>
+
+    <hr class="sidebar-divider">
+
+{{--    <li class="nav-item">--}}
+{{--        @can('menu_payments_access')--}}
+{{--            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsepayments" aria-expanded="true" aria-controls="collapsepayments">--}}
+{{--                <i class="fas fa-money-check"></i>--}}
+{{--                <span>{{ trans('global.payments') }}</span>--}}
+{{--            </a>--}}
+
+{{--            <div id="collapsepayments" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">--}}
+{{--                <div class="bg-white py-2 collapse-inner rounded">--}}
+{{--                    {{ route('transactionscahier-list') }}--}}
+
+{{--                    @can('menu_payments_office_access')--}}
+{{--                        <a class="collapse-item" href="" target="_blank"> <i class="fas fa-dollar-sign"></i> {{ trans('global.office_payments') }}</a>--}}
+{{--                    @endcan--}}
+
+{{--                    @can('menu_payments_companies_access')--}}
+{{--                        <a class="collapse-item" href="" target="_blank"> <i class="fas fa-dollar-sign"></i> {{ trans('global.companies_payments') }}</a>--}}
+{{--                    @endcan--}}
+
+{{--                    @can('menu_payments_brokers_access')--}}
+{{--                        <a class="collapse-item" href="" target="_blank"> <i class="fas fa-dollar-sign"></i> {{ trans('global.broker_payments') }}</a>--}}
+{{--                    @endcan--}}
+
+{{--                    @can('menu_payments_garages_access')--}}
+{{--                        <a class="collapse-item" href="" target="_blank"><i class="fas fa-dollar-sign"></i> {{ trans('global.garages_payments') }}</a>--}}
+{{--                    @endcan--}}
+
+{{--                   @can('menu_payments_experts_access')--}}
+{{--                        <a class="collapse-item" href=""><i class="fas fa-dollar-sign"></i> {{ trans('global.experts_payments') }}</a>--}}
+{{--                    @endcan--}}
+
+{{--                    @can('menu_payments_hospitals_access')--}}
+{{--                        <a class="collapse-item" href=""><i class="fas fa-dollar-sign"></i> {{ trans('global.hospitals_payments') }}</a>--}}
+{{--                    @endcan--}}
+
+{{--                    @can('menu_payments_aperson_access')--}}
+{{--                        <a class="collapse-item" href=""><i class="fas fa-dollar-sign"></i> {{ trans('global.aperson_payments') }}</a>--}}
+{{--                    @endcan--}}
+
+{{--                    @can('menu_payments_banks_access')--}}
+{{--                        <a class="collapse-item" href=""><i class="fas fa-dollar-sign"></i> {{ trans('global.banks_payments') }}</a>--}}
+{{--                    @endcan--}}
+
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        @endcan--}}
+{{--    </li>--}}
+
+
+{{--    <hr class="sidebar-divider">--}}
+{{--    <li class="nav-item">--}}
+{{--        @can('report_access')--}}
+{{--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">--}}
+{{--            <i class="fas fa-chart-bar"></i>--}}
+{{--            <span>{{ trans('global.reports') }}</span>--}}
+{{--        </a>--}}
+
+{{--        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">--}}
+{{--            <div class="bg-white py-2 collapse-inner rounded">--}}
+
+{{--                @can('cashier_transaction_access')--}}
+{{--                    <a class="collapse-item" href="{{ route('transactionscahier-list') }}" target="_blank"> <i class="fas fa-th-list"></i>{{ trans('global.transactionscahier') }}</a>--}}
+{{--                @endcan--}}
+
+{{--                @can('cars_transaction_access')--}}
+{{--                    <a class="collapse-item" href="{{ route('transactionscars-list') }}" target="_blank"> <i class="fas fa-th-list"></i>{{ trans('global.transactioncars') }}</a>--}}
+{{--                @endcan--}}
+
+{{--                @can('incomingcars_access')--}}
+{{--                    <a class="collapse-item" href="{{ route('upcomingcars-list') }}" target="_blank"> <i class="fas fa-th-list"></i>{{ trans('global.incomingcars') }}</a>--}}
+{{--                @endcan--}}
+
+{{--                @can('incomingcars_access')--}}
+{{--                    <a class="collapse-item" href="{{ route('availablecars-list') }}" target="_blank"><i class="fas fa-th-list"></i>{{ trans('global.availablecars') }}</a>--}}
+{{--                @endcan--}}
+
+{{--               @can('speedreport_access')--}}
+{{--                    <a class="collapse-item" href=""><i class="fas fa-th-list"></i>{{ trans('global.speedreport') }}</a>--}}
+{{--                @endcan--}}
+
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        @endcan--}}
+{{--    </li>--}}
 
 
 
     <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+{{--    <hr class="sidebar-divider d-none d-md-block">--}}
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

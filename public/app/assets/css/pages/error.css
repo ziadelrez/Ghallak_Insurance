@@ -1,0 +1,21 @@
+/* 0 of 6 CSS properties converted by rtl.daskhat.ir 
+ These properties should be override originals. 
+ just load rtl css file after original css file.*/ 
+
+/* body {direction:rtl;} */
+
+#error{
+    height: 100vh;
+    background-color: #ebf3ff;
+    padding-top: 5rem;
+}
+
+#error .img-error{
+    width: 100%;
+}
+
+#error .error-title{
+    font-size: 4rem;
+    margin-top: 3rem;
+}
+

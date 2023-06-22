@@ -4,8 +4,13 @@ $(document).ready(function () {
         allowClear: true
     });
 
-    $(".selectionctype").select2({
-        placeholder: "إختر نوع الزبون",
+    $(".selectionrelig").select2({
+        placeholder: "إختر الطائفة",
+        allowClear: true
+    });
+
+    $(".selectionevalclient").select2({
+        placeholder: "إختر تقييم الزبون",
         allowClear: true
     });
 
@@ -14,15 +19,45 @@ $(document).ready(function () {
         allowClear: true
     });
 
-    $(".selectionplace").select2({
-        placeholder: "إختر مكان الولادة",
+    $(".selectionfollowby").select2({
+        placeholder: "إختر إسم الوصي على الملف",
         allowClear: true
     });
 
-    $(".selectionpassplace").select2({
-        placeholder: "إختر مكان إصدار الجواز",
-        allowClear: true
-    });
+
+
+    // $(".selectionnatio").select2({
+    //     placeholder: "إختر الجنسية",
+    //     allowClear: true
+    // });
+    //
+    // $(".selectionplace").select2({
+    //     placeholder: "إختر مكان الولادة",
+    //     allowClear: true
+    // });
+    //
+    // $(".selectionpassplace").select2({
+    //     placeholder: "إختر مكان إصدار الجواز",
+    //     allowClear: true
+    // });
+    //
+    // $(".selectionliplace").select2({
+    //     placeholder: "إختر مكان إصدار رخصة الفيادة",
+    //     allowClear: true
+    // });
+
+    var now = new Date();
+    var month = (now.getMonth() + 1);
+    var day = now.getDate();
+    if (month < 10)
+        month = "0" + month;
+    if (day < 10)
+        day = "0" + day;
+    var today = now.getFullYear() + '-' + month + '-' + day;
+    $('#birthdate').val(today);
+
+    displayshares();
+
 });
 
 function go(a, b, e, elt) {
@@ -56,6 +91,45 @@ function go(a, b, e, elt) {
     });
 
 }
+
+
+function onCheckboxChangedOffice(checked){
+    if(checked) {
+        $("#officeshare").show();
+    }
+    else{
+        $("#officeshare").hide();
+    }
+}
+
+function onCheckboxChangedBroker(checked){
+    if(checked) {
+        $("#brokershare").show();
+    }
+    else {
+        $("#brokershare").hide();
+    }
+}
+
+function displayshares(){
+    if ($('#broker').is(':checked')){
+        $("#brokershare").show();
+    }
+
+    if ($('#office').is(':checked')){
+        $("#officeshare").show();
+    }
+}
+
+$(document).on('keyup', '#cname', function(){
+    $("#name").val( $("#cname").val());
+});
+
+
+//
+// $(document).on('keyup', '#extracost', function(){
+//     calcalutesums();
+// });
 
 // $('#myModal.select2').select2();
 

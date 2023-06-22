@@ -1,183 +1,112 @@
 <!DOCTYPE html>
-<html class="no-js" lang="">
-<head>
-    <!-- meta charset -->
-    <meta charset="utf-8">
-    <!-- site title -->
-    <title>Phantom | Personal Resume Template</title>
-    <!-- meta description -->
-    <meta name="description" content="">
-    <!-- mobile viwport meta -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- fevicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<html lang="en">
 
-    <!-- ================================
-    CSS Files
-    ================================= -->
-    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i|Open+Sans:400,600,700,800" rel="stylesheet">
-    <link rel="stylesheet" href={{URL::asset('index_files/css/themefisher-fonts.min.css')}}>
-{{--    <link rel="stylesheet" href={{URL::asset('index_files/css/owl.carousel.min.css')}}>--}}
-    <link rel="stylesheet" href={{URL::asset('index_files/css/bootstrap.min.css')}}>
-    <link rel="stylesheet" href={{URL::asset('index_files/css/main.css')}}>
-    <link id="color-changer" rel="stylesheet" href={{URL::asset('index_files/css/colors/color-0.css')}}>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>CONTACT US | HALLAK INSURANCE BROKER</title>
+    <link rel="shortcut icon" href="images/favicon.png" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link href="css/icons.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 8]><!-->
+    <link rel="stylesheet" href="ie7/ie7.css">
+    <!--<![endif]-->
+    <link href={{URL::asset('index_files/css/style.css')}} rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
-<body>
+<body data-spy="scroll" data-target=".navbar-fixed-top">
+@include('includes.adminpanel.landingheader')
 
-<div class="preloader">
-    <div class="loading-mask"></div>
-    <div class="loading-mask"></div>
-    <div class="loading-mask"></div>
-    <div class="loading-mask"></div>
-    <div class="loading-mask"></div>
-</div>
+<div class="clear"></div>
+<div id="page-content">
+    <div class="breadcrumbs">
 
-<main class="site-wrapper">
-    <div class="pt-table">
-        <div class="pt-tablecell page-contact relative">
-            <!-- .close -->
-            <a href="./" class="page-close"><i class="tf-ion-close"></i></a>
-            <!-- /.close -->
+        <div class="col-sm-8">
+            <div class="page-header float-right">
+                <div class="page-title">
 
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
-                        <div class="page-title text-center">
-                            <h2>Get in  <span class="primary">touch</span> <span class="title-bg">Contact</span></h2>
-                            <p>Don't hesitate to contact us for any further information</p>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-box">
+                        <h2>Get in Touch</h2>
+                        <div class="form-content">
+                            <input type="text" name="name" placeholder="Your Name" />
+                            <input type="text" name="email" placeholder="Email" />
+                            <input type="text" name="subject" placeholder="Subject" />
+                            <textarea rows="1" cols="1" name="message" placeholder="Message"></textarea>
+                            <div class="text-center">
+                                <input type="submit" class="btn-default" value="Submit" />
+                            </div>
                         </div>
                     </div>
-                </div> <!-- /.row -->
 
-                <div class="row">
-                    <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-                        <div class="contact-block">
-                            <div class="media">
-                                <div class="media-left">
-                                    <i class="tf-envelope2"></i>
-                                </div>
-                                <div class="media-body">
-                                    <h4>Email</h4>
-                                    <p><a href="mailto:info@najibrentacar.com">info@najibrentacar.com</a></p>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <div class="contact-info">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="contact-address">
+                                    <h3>Address</h3>
+                                    <div>
+                                        <i class="icon ti-home"></i>
+                                        <p>Tripoli
+                                            <br/>North Lebanon
+                                            <br/>El Sakafi Street</p>
+                                        <p class="social">
+                                            <a href="https://www.facebook.com/GhassanElHallak"><i class="fa fa-facebook"></i></a>
+                                            <a href="#"><i class="fa fa-instagram"></i></a>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- /.contact-block -->
-                        <div class="contact-block">
-                            <div class="media">
-                                <div class="media-left">
-                                    <i class="tf-phone2"></i>
-                                </div>
-                                <div class="media-body">
-                                    <h4>Phone</h4>
-                                    <p><a href="tel:+9613540540">+961 3 540 540</a></p>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="contact-dtl">
+                                    <h3>Contact Details</h3>
+                                    <div>
+                                        <i class="icon fa fa-phone"></i>
+                                        <p>+961 (70) 424 200</p>
+                                    </div>
+                                    <div>
+                                        <i class="icon ti-email"></i>
+                                        <p><a href="#">info@ghallakinsurance.com</a></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- /.contact-block -->
-{{--                        <div class="contact-block">--}}
-{{--                            <div class="media">--}}
-{{--                                <div class="media-left">--}}
-{{--                                    <i class="tf-mobile"></i>--}}
-{{--                                </div>--}}
-{{--                                <div class="media-body">--}}
-{{--                                    <h4>Skype</h4>--}}
-{{--                                    <p><a href="skype:my_name">my_name</a></p>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-                        <!-- /.contact-block -->
-
-                        <ul class="contact-social">
-                            <li>
-                                <span class="contact-social-hex"></span>
-                                <a href="https://www.facebook.com/NajibCarRental/"><i class="tf-ion-social-facebook"></i></a>
-                            </li>
-                            <li>
-                                <span class="contact-social-hex"></span>
-                                <a href="www.twitter.com/#"><i class="tf-ion-social-twitter"></i></a>
-                            </li>
-                            <li>
-                                <span class="contact-social-hex"></span>
-                                <a href="#"><i class="tf-ion-social-google"></i></a>
-                            </li>
-
-                        </ul>
-                    </div>
-                    <div class="col-xs-12 col-sm-7 col-md-7 col-md-offset-1 col-lg-offset-2">
-                        <div class="section-title clear">
-                            <h3>Send me a meesage</h3>
-                            <span class="bar-dark"></span>
-                            <span class="bar-primary"></span>
-                        </div>
-
-                        <form id="contact-form" class="row contact-form no-gutter" action="#" method="post">
-                            <div class="col-xs-12 col-sm-6">
-                                <div class="input-field name">
-                                    <span class="input-icon" id="name" ><i class="tf-profile-male"></i></span>
-                                    <input type="text" class="form-control"  placeholder="Enter your name">
-                                </div>
-                            </div> <!-- ./col- -->
-                            <div class="col-xs-12 col-sm-6">
-                                <div class="input-field email">
-                                    <span class= "input-icon" id="email"><i class="tf-envelope2"></i></span>
-                                    <input type="email" class="form-control" name="email" placeholder="Your email address">
-                                </div>
-                            </div> <!-- ./col- -->
-                            <div class="col-xs-12 col-sm-12">
-                                <div class="input-field">
-                                    <span class= "input-icon" id="subject"><i class="tf-pricetags"></i></span>
-                                    <input type="text" class="form-control" name="subject" placeholder="Enter the discussion title">
-                                </div>
-                            </div> <!-- ./col- -->
-                            <div class="col-xs-12 col-sm-12">
-                                <div class="input-field message">
-                                    <span class= "input-icon" ><i class="tf-pencil2"></i></span>
-                                    <textarea name="message" id="message" class="form-control" placeholder="Write your message"></textarea>
-                                </div>
-                            </div> <!-- ./col- -->
-                            <div class="col-xs-12 col-sm-12">
-                                <div class="input-field">
-                                            <span class="btn-border">
-                                                <button type="submit" class="btn btn-primary btn-custom-border text-uppercase">Send Message now</button>
-                                            </span>
-                                </div>
-                                <div class="msg-success">Your Message was sent successfully</div>
-                                <div class="msg-failed">Something went wrong, please try again later</div>
-                            </div> <!-- ./col- -->
-                        </form> <!-- /.row -->
-                    </div> <!-- /.col- -->
-                </div> <!-- /.row -->
-            </div> <!-- /.container -->
-
-            <nav class="page-nav clear">
-                <div class="container">
-                    <div class="flex flex-middle space-between">
-                        <span class="prev-page"><a href="#" class="link"></a></span>
-                        <span class="copyright hidden-xs">Copyright © Najib Rent a Car 2021, All Rights Reserved.</span>
-                        <span class="next-page"><a href="#" class="link"></a></span>
+                        <div class="clearfix"></div>
                     </div>
                 </div>
-                <!-- /.page-nav -->
-            </nav>
-            <!-- /.container -->
+            </div>
+{{--            <div class="contact-map">--}}
+{{--                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235013.52897217585!2d72.43965449510691!3d23.02060002135479!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1474053074398" width="100%" height="260" frameborder="0" style="border:0" allowfullscreen></iframe>--}}
+{{--            </div>--}}
+        </div>
 
-        </div> <!-- /.pt-tablecell -->
-    </div> <!-- /.pt-table -->
-</main> <!-- /.site-wrapper -->
-
-<!-- ================================
-JavaScript Libraries
-================================= -->
-<script src={{URL::asset('index_files/js/vendor/jquery-2.2.4.min.js')}}></script>
-<script src={{URL::asset('index_files/js/vendor/bootstrap.min.js')}}></script>
-<script src={{URL::asset('index_files/js/jquery.easing.min.js')}}></script>
-<script src={{URL::asset('index_files/js/isotope.pkgd.min.js')}}></script>
-<script src={{URL::asset('index_files/js/jquery.nicescroll.min.js')}}></script>
-<script src={{URL::asset('index_files/js/owl.carousel.min.js')}}></script>
-<script src={{URL::asset('index_files/js/jquery-validation.min.js')}}></script>
-<script src={{URL::asset('index_files/js/form.min.js')}}></script>
-<script src={{URL::asset('index_files/js/main.js')}}></script>
+</div>
+<div class="clear"></div>
+@include('includes.adminpanel.landingfooter')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.min.js"></script>
+<script src={{URL::asset('index_files/js/custom.js')}}></script>
 </body>
+
 </html>

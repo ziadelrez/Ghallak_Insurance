@@ -1,3 +1,8 @@
+$sstotal = 0;
+$sdays = 0;
+$srates = 0;
+$sdriver = 0;
+$sgaz = 0;
 $(document).on('click','.create-modal', function() {
     $('#create').modal('show');
     $('#err_details').hide();
@@ -23,6 +28,11 @@ function getinfo(ccid){
             'extratime' : '',
             'extracost' : '',
             'carback' : '',
+            'stotal' : '',
+            'days' : '',
+            'dayrate' : '',
+            'drivercost' : '',
+            'gascost' : '',
 
         },
         dataType:'json',
@@ -37,6 +47,12 @@ function getinfo(ccid){
                 $('#create #hcost').val(data.hcost);
                 $('#create #extratime').val(data.extratime);
                 $('#create #extracost').val(data.extracost);
+                $('#create #sumtotal').val(data.stotal);
+                $sstotal = data.stotal;
+                $sdays = data.days;
+                $srates = data.dayrate;
+                $sdriver = data.drivercost;
+                $sgaz = data.gascost;
                 // $('#create #carback').val(data.carback ? true : false);
                 $('#create #carback').prop("checked", data.carback == '1');
             }
@@ -63,6 +79,8 @@ $("#add").click(function() {
             'hcost' : $('input[name=hcost]').val(),
             'extratime' : $('input[name=extratime]').val(),
             'extracost' : $('input[name=extracost]').val(),
+            'stotal' : $('input[name=sumtotal]').val(),
+            'coid' : $('input[name=contid_id]').val(),
             'carback' : $chk_status,
         },
         success: function(data){
@@ -74,6 +92,7 @@ $("#add").click(function() {
                 // $('.error').text(data.errors.title);
             } else {
                 $('#create').modal('hide');
+                location.reload();
             }
         },
     });
@@ -97,7 +116,7 @@ $(document).on('click', '.delete-modal', function() {
 $('.modal-footer').on('click', '.delete', function(){
     $.ajax({
         type: 'POST',
-        url: '/contract-car-details/delete/'+ $('.id').text(),
+        url: '/contract-details/delete/'+ $('.id').text(),
         data: {
             '_token': $('meta[name="csrf-token"]').attr('content'),
             'id': $('.id').text(),
@@ -119,5 +138,33 @@ $('.modal-footer').on('click', '.delete', function(){
         }
     });
 });
+
+$(document).on('change', '#hcost', function(){
+    extcosttime();
+});
+
+$(document).on('change', '#extratime', function(){
+    extcosttime();
+});
+
+function extcosttime(){
+    $sum = 0;
+    $sum1 = 0;
+    $stotal = 0;
+    let extratime = parseFloat($('#extratime').val());
+    let hcost = parseFloat($('#hcost').val());
+    $sum = extratime * hcost;
+    $sum1 = ($sdays * $srates) + $sgaz + $sdriver
+    $stotal = Number($sum) + Number($sum1);
+    $('#extracost').val($sum);
+    $('#sumtotal').val($stotal);
+}
+
+// function refreshTable() {
+//     $('#table').fadeOut();
+//     $('#table').load(url, function() {
+//         $('#table').fadeIn();
+//     });
+// }
 
 

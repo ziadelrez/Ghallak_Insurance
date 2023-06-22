@@ -9,6 +9,16 @@ $(document).ready(function () {
         allowClear: true
     });
 
+    $(".selectpaymenttype").select2({
+        placeholder: "إختر طريقة الدفع",
+        allowClear: true
+    });
+
+    $(".selectbanks").select2({
+        placeholder: "إختر إسم البنك",
+        allowClear: true
+    });
+
    $(".selectbranch").select2({
         placeholder: "إخنر الفرع",
         allowClear: true
@@ -24,8 +34,35 @@ $(document).ready(function () {
     $('#fromdate').val(today);
     $('#todate').val(today);
 
+    var now1 = new Date();
+    var month1 = (now1.getMonth() + 1);
+    var day1 = now1.getDate();
+    if (month1 < 10)
+        month1 = "0" + month1;
+    if (day1 < 10)
+        day1 = "0" + day1;
+    var today1 = now1.getFullYear() + '-' + month1 + '-' + day1;
+    $('#checkdate').val(today1);
+
+    document.getElementById("banks-div").hidden = true;
+
     fetch_expenses_data($('#fromdate').val(),$('#todate').val());
     // getsum();
+});
+
+$(document).on('change', '#paymenttype', function(){
+    var stext = $('#paymenttype option:selected').attr("value");
+    if(stext == "22"){
+        document.getElementById("banks-div").hidden = false;
+    }else if(stext == ""){
+        document.getElementById("banks-div").hidden = true;
+        $('#banks').val('1').trigger('change');
+        $("#checknum").val('-');
+    }else{
+        document.getElementById("banks-div").hidden = true;
+        $('#banks').val('1').trigger('change');
+        $("#checknum").val('-');
+    }
 });
 
 $(document).on('click', '.edit-btn', function(){
@@ -34,10 +71,14 @@ $(document).on('click', '.edit-btn', function(){
     $('#exp_id').val($(this).data('id'));
     $('#savepayment').text("تعديل البيانات");
     $('#expdate').val($(this).data('expdate'));
+    $('#checkdate').val($(this).data('checkdate'));
     $('#exptype').select2('data', {id: $(this).data('exptypeid'), a_key: $(this).data('exptype')}).change();
     $('#amount').val($(this).data('expamount'));
     $('#curr').select2('data', {id: $(this).data('expcurrid'), a_key: $(this).data('expcurr')}).change();
+    $('#banks').select2('data', {id: $(this).data('bankid'), a_key: $(this).data('bankname')}).change();
     $('#branch').select2('data', {id: $(this).data('expbranchid'), a_key: $(this).data('expbranch')}).change();
+    $('#paymenttype').select2('data', {id: $(this).data('paytypeid'), a_key: $(this).data('paytype')}).change();
+    $('#checknum').val($(this).data('checknum'));
 });
 
 $('#bootstrap-data-table').on('click', '.delete-btn', function () {
@@ -83,6 +124,8 @@ $('#bootstrap-data-table').on('click', '.delete-btn', function () {
 
 $(document).on('click', '#searchexp', function(){
     fetch_expenses_data($('#fromdate').val(),$('#todate').val());
+    fetch_expenses_usd($('#fromdate').val(),$('#todate').val());
+    fetch_expenses_lbp($('#fromdate').val(),$('#todate').val());
 });
 
 $(document).on('click', '#clearpayment', function(){
@@ -99,10 +142,14 @@ $(document).on('click', '#savepayment', function(){
             data: {
                 '_token': $('meta[name="csrf-token"]').attr('content'),
                 'expdate': $('input[name=expdate]').val(),
+                'checkdate': $('input[name=checkdate]').val(),
                 'exptype': $('#exptype option:selected').attr("value"),
                 'amount': $('input[name=amount]').val(),
                 'curr': $('#curr option:selected').attr("value"),
                 'branch': $('#branch option:selected').attr("value"),
+                'paymenttype': $('#paymenttype option:selected').attr("value"),
+                'checknum': $('input[name=checknum]').val(),
+                'bank': $('#banks option:selected').attr("value"),
             },
             success: function (data) {
                 if ((data.errors)) {
@@ -112,10 +159,13 @@ $(document).on('click', '#savepayment', function(){
                     });
                 } else {
                     $('#err_details_expdate').remove()
+                    $('#err_details_checkdate').remove()
                     $('#err_details_exptype').remove()
                     $('#err_details_amount').remove()
                     $('#err_details_curr').remove()
+                    $('#err_details_bank').remove()
                     $('#err_details_branch').remove()
+                    $('#err_details_paymenttype').remove()
                     fetch_expenses_data($('#fromdate').val(),$('#todate').val());
                     clearpayment();
                 }
@@ -131,10 +181,14 @@ $(document).on('click', '#savepayment', function(){
                 '_token': $('meta[name="csrf-token"]').attr('content'),
                 'id': $fid,
                 'expdate': $('input[name=expdate]').val(),
+                'checkdate': $('input[name=checkdate]').val(),
                 'exptype': $('#exptype option:selected').attr("value"),
                 'amount': $('input[name=amount]').val(),
                 'curr': $('#curr option:selected').attr("value"),
                 'branch': $('#branch option:selected').attr("value"),
+                'paymenttype': $('#paymenttype option:selected').attr("value"),
+                'checknum': $('input[name=checknum]').val(),
+                'bank': $('#banks option:selected').attr("value"),
             },
             success: function (data) {
                 if ((data.errors)) {
@@ -144,10 +198,13 @@ $(document).on('click', '#savepayment', function(){
                     });
                 } else {
                     $('#err_details_expdate').remove()
+                    $('#err_details_checkdate').remove()
                     $('#err_details_exptype').remove()
                     $('#err_details_amount').remove()
                     $('#err_details_curr').remove()
+                    $('#err_details_bank').remove()
                     $('#err_details_branch').remove()
+                    $('#err_details_paymenttype').remove()
                     fetch_expenses_data($('#fromdate').val(),$('#todate').val());
                     clearpayment();
                 }
@@ -157,14 +214,31 @@ $(document).on('click', '#savepayment', function(){
 });
 
 function clearpayment(){
+
+    var now = new Date();
+    var month = (now.getMonth() + 1);
+    var day = now.getDate();
+    if (month < 10)
+        month = "0" + month;
+    if (day < 10)
+        day = "0" + day;
+    var today = now.getFullYear() + '-' + month + '-' + day;
+    $('#checkdate').val(today);
+
     $('#err_details_expdate').hide()
+    $('#err_details_checkdate').hide()
     $('#err_details_exptype').hide()
     $('#err_details_amount').hide()
     $('#err_details_curr').hide()
+    $('#err_details_bank').hide()
     $('#err_details_branch').hide()
+    $('#err_details_paymenttype').hide()
 
     $('#exptype').val('').trigger('change');
     $('#branch').val('').trigger('change');
+    $('#banks').val('1').trigger('change');
+    $('#paymenttype').val('').trigger('change');
+    $("#checknum").val('-');
     $("#expdate").val('');
     $('#amount').val('0');
     $('#curr').val('').trigger('change');
@@ -175,7 +249,8 @@ function clearpayment(){
 function fetch_expenses_data(fromdate = '',todate = '')
 {
     $('#bootstrap-data-table').DataTable({
-        processing: true,
+        // processing: true,
+        order: [[ 1, "desc" ]],
         serverSide: true,
         bDestroy: true,
         "language" :{
@@ -222,6 +297,56 @@ function fetch_expenses_data(fromdate = '',todate = '')
     });
 }
 
+function fetch_expenses_usd(fromdate = '',todate = '') {
+    $.ajax({
+        type: 'GET',
+        url: '/getexpenses_usd',
+        data: {
+            fromdate:fromdate,
+            todate:todate,
+            ramount:'',
+            rcurr:''
+        },
+        success: function (data) {
+            if (data.errors) {
+                $.each(data.errors, function (key, value) {
+                    alert(value);
+                });
+            } else {
+                // console.log(data.ramount);
+                // console.log(sqlstr);
+                document.getElementById("trusd").innerText =  $("#total_bills_usd").val() + ' : '+ data.ramount + ' ' + data.rcurr;
+            }
+        }
+    });
+
+}
+
+function fetch_expenses_lbp(fromdate = '',todate = '') {
+    $.ajax({
+        type: 'GET',
+        url: '/getexpenses_lbp',
+        data: {
+            fromdate:fromdate,
+            todate:todate,
+            ramount:'',
+            rcurr:''
+        },
+        success: function (data) {
+            if (data.errors) {
+                $.each(data.errors, function (key, value) {
+                    alert(value);
+                });
+            } else {
+                // console.log(data.ramount);
+                // console.log(sqlstr);
+                document.getElementById("trlbp").innerText = $("#total_bills_lbp").val() + ' : '+ data.ramount + ' ' + data.rcurr;
+            }
+        }
+    });
+
+}
+
 function go(a, b, e, elt) {
 
 
@@ -253,6 +378,8 @@ function go(a, b, e, elt) {
     });
 
 }
+
+
 
 // $('#myModal.select2').select2();
 

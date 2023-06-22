@@ -26,15 +26,15 @@
                         <div class="col-md-9 col-sm-9 col-xs-12">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{{url('/gdef-list')}}"> جدول المعلومات العامة</a></li>
+                                    <li class="breadcrumb-item"><a href="{{url('/gdef-list')}}">{{ trans('global.generalinfolist') }}</a></li>
                                     <li class="breadcrumb-item active" aria-current="page"><span style="color:black"></span><span style="color:red">{{ $titlegd }}</span ></li>
                                 </ol>
                             </nav>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-12">
-                            <button class="create-modal btn btn-primary btn-lg" >
+                            <button class="create-modal btn btn-primary btn-lg btn-block" >
                                 <i class="fas fa-plus-circle"></i>
-                                إضافة تعريف
+                                {{ trans('global.addgeninfo') }}
                             </button>
                         </div>
                     </div>
@@ -52,9 +52,9 @@
                         <table class="table table-bordered" id="table" width="100%" cellspacing="0">
                             <thead>
                             <tr>
-                                <th width="150px" style="display:none;" >رقم التسلسلي</th>
-                                <th>التعريف</th>
-                                <th class="text-center" width="150px">الاجراءات</th>
+                                <th width="150px" style="display:none;" >{{ trans('global.serialcode') }}</th>
+                                <th>{{ trans('global.definition') }}</th>
+                                <th class="text-center" width="150px">{{ trans('global.actionsdef') }}</th>
                             </tr>
                             </thead>
 {{--                            <tfoot>--}}

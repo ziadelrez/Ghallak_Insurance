@@ -12,11 +12,14 @@ $(document).on('click','.create-modal-li', function() {
     $('#person').focus();
     $('#contract_id_1').val($(this).data('id'));
     $('#cflag').val('0');
+    $("#liplace").val('').trigger('change')
+    $('#lidate').val('');
     $('#lblcocode').val($(this).data('title'));
     getdrivers($(this).data('id'));
-    // console.log($('#cflag').val('0'));
+    // console.log($(this).data('id'));
 
 });
+
 function getdrivers(ccid){
     // document.getElementById("noresult").style.display = "none";
     $.ajax({
@@ -58,6 +61,8 @@ $("#adddriver").click(function() {
                 'id': '',
                 'person': $('input[name=person]').val(),
                 'linum': $('input[name=linum]').val(),
+                'liplace': $('#liplace option:selected').attr("value"),
+                'lidate': $('input[name=lidate]').val(),
             },
             success: function (data) {
                 // console.log(data)
@@ -80,6 +85,8 @@ $("#adddriver").click(function() {
                         '</tr>');
                     $('#person').val('');
                     $('#linum').val('');
+                    $("#liplace").val('').trigger('change')
+                    $('#lidate').val('');
                     $('#person').focus();
                 }
             },
@@ -94,6 +101,8 @@ $("#adddriver").click(function() {
                 'id': $('input[name=liid]').val(),
                 'person': $('input[name=person]').val(),
                 'linum': $('input[name=linum]').val(),
+                'liplace': $('#liplace option:selected').attr("value"),
+                'lidate': $('input[name=lidate]').val(),
             },
             success: function(data) {
                 if ((data.errors)) {
@@ -115,6 +124,8 @@ $("#adddriver").click(function() {
                     $('#linum').val('');
                     $('#cflag').val('0');
                     $('#liid').val('');
+                    $("#liplace").val('').trigger('change')
+                    $('#lidate').val('');
                     $('#person').focus();
                 }
             }
@@ -127,9 +138,27 @@ $(document).on('click', '.edit-modal-li', function() {
     $('#liid').val($(this).data('id'));
     $('#person').val($(this).data('person'));
     $('#linum').val($(this).data('linum'));
-    $('#adddrivericon').text(" تعديل");
-    $('#adddrivericon').addClass('fa-check');
-    $('#adddrivericon').removeClass('fa-plus');
+    $.ajax({
+        type: 'GET',
+        url: '/getlidetails',
+        data: {
+            '_token': $('meta[name="csrf-token"]').attr('content'),
+            'contid': $('input[name=contract_id_1]').val(),
+            'liid': $(this).data('id'),
+            'person': '',
+            'linum': '',
+            'liplaceid': '',
+            'liplacename': '',
+            'lidate': '',
+        },
+        success: function(data) {
+            $('#liplace').select2('data', {id: data.liplaceid, a_key: data.liplacename}).change();
+            $('#lidate').val(data.lidate);
+            $('#adddrivericon').text(" تعديل");
+            $('#adddrivericon').addClass('fa-check');
+            $('#adddrivericon').removeClass('fa-plus');
+        }
+    });
 });
 
 $('#tablemodal').on('click', '.delete-modal-li', function() {
@@ -149,7 +178,39 @@ $('#tablemodal').on('click', '.delete-modal-li', function() {
     $('#linum').val('');
     $('#cflag').val('0');
     $('#liid').val('');
+    $("#liplace").val('').trigger('change')
+    $('#lidate').val('');
     $('#person').focus();
 });
 
+function go(a, b, e, elt) {
 
+
+    var $parent_form = $('#' + e).closest('.form-group');
+    var parent_id = $parent_form.attr('data-label');
+
+    // console.log($parent_form);
+
+    $.ajax({
+        type: "POST",
+        url: $("#def_quick_add").val(),
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            tid: parent_id,
+            description: b,
+        },
+        beforeSend: function () {
+            $(a).html('جاري التنفيذ .....');
+        },
+    }).done(function (data) {
+        // console.log(data.id + ' , ' + b);
+        $parent_form.children('select').append("<option value='" + data.id + "'>" + b + "</option>")
+        $parent_form.children('select').select2("destroy");
+        $parent_form.children('select').select2();
+        $parent_form.children('select').select2("val", data.id);
+        $parent_form.children('select').select2("close");
+        $parent_form.children('select').select2("close");
+        $(a).html('<i class="fa fa-plus-circle"></i> أضافة جديدة');
+    });
+
+}

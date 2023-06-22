@@ -63,13 +63,15 @@
                             <thead>
                             <tr>
                                 <th width="150px" style="display:none;" >{{ trans('page-contract.contract.tables.id') }}</th>
-                                <th class="text-center " style="vertical-align: middle" width="100px">{{ trans('page-contract.contract.tables.code') }}</th>
-                                <th class="text-center " style="vertical-align: middle" width="150px">{{ trans('page-contract.contract.tables.date') }}</th>
-                                <th class="text-center " style="vertical-align: middle" width="100px">{{ trans('page-contract.contract.tables.carsnumbers') }}</th>
-                                <th class="text-center " style="vertical-align: middle" width="150px">{{ trans('page-contract.contract.tables.totalamount') }}</th>
-                                <th class="text-center " style="vertical-align: middle" width="80px">{{ trans('page-contract.contract.tables.curr') }}</th>
-                                <th class="text-center" style="vertical-align: middle" width="150px">{{ trans('page-contract.contract.tables.details') }}</th>
-                                <th class="text-center" style="vertical-align: middle" width="150px">{{ trans('page-contract.contract.tables.actions') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.code') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.date') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.billnum') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.coinscount') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.coinsname') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.totalamountusd') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.totalamountlbp') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.actionsins') }}</th>
+                                <th class="text-center align-middle text-nowrap">{{ trans('page-contract.contract.tables.actions') }}</th>
                             </tr>
                             </thead>
 
@@ -78,20 +80,22 @@
                                 <input id="contract_id" type="hidden" name="contract_id" value="">
                                 <tr class="corrows{{$colist -> id}}">
                                     <td style="display:none;" >{{$colist -> id}}</td>
-                                    <td class="text-center" style="vertical-align: middle" width="100px">{{$colist -> cocode}}</td>
-                                    <td class="text-center" style="vertical-align: middle" width="150px">{{$colist -> codate}}</td>
-                                    <td class="text-center" style="vertical-align: middle" width="100px">{{$colist -> cocars}}</td>
-                                    <td class="text-center" style="vertical-align: middle" width="150px">{{$colist -> coamount}}</td>
-                                    <td class="text-center" style="vertical-align: middle" width="80px">{{$colist -> cocurr}}</td>
-                                    <td class="text-center">
+                                    <td class="text-center align-middle text-nowrap">{{$colist -> cocode}}</td>
+                                    <td class="text-center align-middle text-nowrap">{{$colist -> codate}}</td>
+                                    <td class="text-center align-middle text-nowrap">{{$colist -> codestr}}</td>
+                                    <td class="text-center align-middle text-nowrap">{{$colist -> coinscount}}</td>
+                                    <td class="text-center align-middle text-nowrap">{{$colist -> coinsname}}</td>
+                                    <td class="text-center align-middle text-nowrap">{{$colist -> coamount}} {{$colist -> cocurr}}</td>
+                                    <td class="text-center align-middle text-nowrap">{{$colist -> coamountlbp}} {{$colist -> cocurrlbp}}</td>
+                                    <td class="text-center align-middle text-nowrap">
                                         <a href="{{ route('contract-details',$colist -> id)}}" class="btn btn-info btn-sm" title="{{ trans('page-contract.contract.titles.cdetails') }}">
-                                            <i class="fa fa-car"></i>
+                                            <i class="fa fa-user-shield"></i>
                                         </a>
-                                        <button class="create-modal-li btn btn-secondary btn-sm" data-id="{{$colist -> id}}" data-title="{{$colist->cocode}}" title="{{ trans('page-contract.contract.titles.adddriver') }}">
-                                            <i class="fa fa-id-card"></i>
-                                        </button>
+                                        <a href="{{ route('print-bill-client',$colist -> id)}}" target="_blank" class="btn btn-outline-primary btn-sm" title="{{ trans('page-contract.contract.titles.printbill') }}">
+                                            <i class="fa fa-money-bill-alt"></i>
+                                        </a>
                                     </td>
-                                    <td class="text-center">
+                                    <td class="text-center align-middle text-nowrap">
                                         <button class="edit-modal btn btn-warning btn-sm" data-id="{{$colist -> id}}" data-cocode="{{$colist->cocode}}" data-codate="{{$colist->codate}}" title="{{ trans('page-contract.contract.titles.editcontract') }}">
                                             <i class="fa fa-edit"></i>
                                         </button>
@@ -105,7 +109,9 @@
                             </tbody>
                         </table>
                         <input type="hidden" id="cdetails" value="{{url('/contract-details')}}">
+                        <input type="hidden" id="printbilldetails" value="{{url('/print-bill-client')}}">
                         <input type="hidden" id="t1" value="{{ trans('page-contract.contract.titles.cdetails') }}">
+                        <input type="hidden" id="tprint" value="{{ trans('page-contract.contract.titles.printbill') }}">
                         <input type="hidden" id="t2" value="{{ trans('page-contract.contract.titles.adddriver') }}">
                         <input type="hidden" id="t3" value="{{ trans('page-contract.contract.titles.cpayments') }}">
                         <input type="hidden" id="t4" value="{{ trans('page-contract.contract.titles.editcontract') }}">
@@ -134,24 +140,27 @@
                     <input id="liid" type="hidden" name="liid" value="">
 {{--                    <span class="hidden idli"></span>--}}
                     <form class="form-horizontal" role="form">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                <label class="control-label " for="lblcocode">{{ trans('page-contract.contract.modals.lblcocode') }} : </label>
+                                <input class="form-control" id="lblcocode" type="text" name="lblcocode" value="" disabled>
+                            </div>
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <div class="form-group">
+                                <label class="control-label " for="person">{{ trans('page-contract.contract.modals.personli') }} : </label>
+                                <input type="text" class="form-control" id="person" name="person"
+                                       placeholder="{{ trans('page-contract.contract.modals.personliholder') }}" required>
 
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="lblcocode">{{ trans('page-contract.contract.modals.lblcocode') }} : </label>
-                            <input class="form-control" id="lblcocode" type="text" name="lblcocode" value="" disabled>
-                        </div>
+                                <div class="alert alert-danger" id="err_details_person" style="display:none">
 
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="person">{{ trans('page-contract.contract.modals.personli') }} : </label>
-                            <input type="text" class="form-control" id="person" name="person"
-                                   placeholder="{{ trans('page-contract.contract.modals.personliholder') }}" required>
-
-                            <div class="alert alert-danger" id="err_details_person" style="display:none">
-
+                                </div>
+                            </div>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label class="control-label col-sm-4" for="linum">{{ trans('page-contract.contract.modals.linumber') }} :</label>
+                            <label class="control-label" for="linum">{{ trans('page-contract.contract.modals.linumber') }} :</label>
                             <input type="text" class="form-control" id="linum" name="linum"
                                    placeholder="{{ trans('page-contract.contract.modals.linumberholder') }}" required>
 
@@ -159,7 +168,36 @@
 
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group" data-label="1">
+                            <label class="control-label " for="liplace">{{ trans('page-contract.contract.modals.lbl_license_place') }} :</label>
+                            <select id="liplace" name="liplace" class="form-control p selectionliplace2"
+                                    aria-required="true" aria-invalid="false">
+                                <option></option>
+                                {{--                                    <option value="" disabled selected hidden>أدخل مكان الفرع</option>--}}
+{{--                                @foreach($liplacelist as $pliclist)--}}
+{{--                                    <option value="{{$pliclist -> id}}">{{$pliclist -> Description}}</option>--}}
+{{--                                @endforeach--}}
+                            </select>
 
+                            <div class="alert alert-danger" id="err_details_liplace" style="display:none">
+
+                            </div>
+                        </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                            <label for="lidate"
+                                   class="control-label ">{{trans('page-contract.contract.modals.lbl_license_date')}} :</label>
+                            <input id="lidate" name="lidate" type="date"
+                                   class="form-control lidate valid" required>
+                            <div class="alert alert-danger" id="err_details_lidate" style="display:none">
+
+                            </div>
+                        </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -288,9 +326,10 @@
                 </div>
             </div>
         </div>
-{{--        <div class="hide" id="hidden-values">--}}
-{{--            <input id="general_def_quick" type="hidden" value="{{url('/addNewValue')}}">--}}
-{{--        </div>--}}
+
+        <div class="hide" id="hidden-values">
+            <input id="def_quick_add" type="hidden" value="{{url('/addNewValueliplace')}}">
+        </div>
     </div>
 @endsection
 

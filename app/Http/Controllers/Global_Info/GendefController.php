@@ -24,7 +24,7 @@ class GendefController extends Controller
 //        $list = DB::select('select * from carcolors where userid = ? ', [Auth::user()->id]);
         $listgendef = DB::table('gendef')
             ->select('id', 'name','tb','status')
-           // ->where('active', '=', 1)
+            ->where('status', '=', 1)
             ->get();
 
         return view('global_info.gendef',compact('listgendef'));
@@ -338,6 +338,90 @@ class GendefController extends Controller
             case "branch_location":
                 $getcount = DB::table('branch')
                     ->where('location','=',$request->get('id'))
+                    ->get();
+                $count = $getcount->count();
+                if($count == 0) {
+                    DB::table($tb)
+                        ->where('id','=', $request->get('id'))
+                        ->delete();
+                    return response()->json(['flag'=>"0"]);
+                }else{
+                    return response()->json(['flag'=>"1"]);
+                }
+                break;
+            case "carsuse":
+                $getcount = DB::table('cars')
+                    ->where('carused','=',$request->get('id'))
+                    ->get();
+                $count = $getcount->count();
+                if($count == 0) {
+                    DB::table($tb)
+                        ->where('id','=', $request->get('id'))
+                        ->delete();
+                    return response()->json(['flag'=>"0"]);
+                }else{
+                    return response()->json(['flag'=>"1"]);
+                }
+                break;
+            case "planstype":
+                $getcount = DB::table('insnames')
+                    ->where('instype','=',$request->get('id'))
+                    ->get();
+                $count = $getcount->count();
+                if($count == 0) {
+                    DB::table($tb)
+                        ->where('id','=', $request->get('id'))
+                        ->delete();
+                    return response()->json(['flag'=>"0"]);
+                }else{
+                    return response()->json(['flag'=>"1"]);
+                }
+                break;
+            case "banks":
+                $getcount = DB::table('clientpayments')
+                    ->where('bank','=',$request->get('id'))
+                    ->get();
+                $count = $getcount->count();
+                if($count == 0) {
+                    DB::table($tb)
+                        ->where('id','=', $request->get('id'))
+                        ->delete();
+                    return response()->json(['flag'=>"0"]);
+                }else{
+                    return response()->json(['flag'=>"1"]);
+                }
+                break;
+            case "followperson":
+                $getcount = DB::table('clients')
+                    ->where('followby','=',$request->get('id'))
+                    ->get();
+                $count = $getcount->count();
+                if($count == 0) {
+                    DB::table($tb)
+                        ->where('id','=', $request->get('id'))
+                        ->delete();
+                    return response()->json(['flag'=>"0"]);
+                }else{
+                    return response()->json(['flag'=>"1"]);
+                }
+                break;
+            case "hospitals":
+                $getcount = DB::table('accident')
+                    ->where('hospital','=',$request->get('id'))
+                    ->get();
+                $count = $getcount->count();
+                if($count == 0) {
+                    DB::table($tb)
+                        ->where('id','=', $request->get('id'))
+                        ->delete();
+                    return response()->json(['flag'=>"0"]);
+                }else{
+                    return response()->json(['flag'=>"1"]);
+                }
+                break;
+            case "accidenttype":
+                $getcount = DB::table('accident')
+                    ->where('accidenttype','=',$request->get('id'))
                     ->get();
                 $count = $getcount->count();
                 if($count == 0) {

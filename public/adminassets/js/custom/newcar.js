@@ -14,8 +14,13 @@ $(document).ready(function () {
         allowClear: true
     });
 
-    $(".selectioncarenginetype").select2({
-        placeholder: "إختر نوع المحرك",
+    $(".selectionenginetype").select2({
+        placeholder: "إختر قوة محرك السيارة",
+        allowClear: true
+    });
+
+    $(".selectioncarsuses").select2({
+        placeholder: "إختر وجهة إستخدام السيارة",
         allowClear: true
     });
 
@@ -74,6 +79,40 @@ function go(a, b, e, elt) {
     });
 
 }
+
+$(document).on('focusout', '#platnumber', function(){
+    $('#err_carsexist').hide()
+    document.getElementById("carssavebtn").disabled = false;
+    $carnumber = $("#platnumber").val();
+    console.log($carnumber);
+    $.ajax({
+        type: 'POST',
+        url: '/getcarnumbervalide',
+        data: {
+            '_token': $('meta[name="csrf-token"]').attr('content'),
+            'carnumber': $carnumber,
+            'status': '',
+            'flag': ''
+        },
+        success: function(data) {
+            if ((data.errors)) {
+                // console.log(data.errors)
+                $('#err_carsexist').hide()
+            } else {
+                    // console.log($idcar)
+                    // console.log(data.flag)
+                    if ((data.flag == "1")) {
+                        $('#err_carsexist').show()
+                        document.getElementById("carssavebtn").disabled = true;
+                    } else {
+                        $('#err_carvalidation').hide()
+                        document.getElementById("carssavebtn").disabled = false;
+                    }
+            }
+
+        }
+    });
+});
 
 // $('#myModal.select2').select2();
 

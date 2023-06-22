@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
+{{--<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">--}}
 <head>
 
     <meta charset="utf-8">
@@ -46,6 +46,7 @@
         <input id="YES" type="hidden" value="{{trans('global.YES')}}">
         <input id="CANCEL" type="hidden" value="{{trans('global.CANCEL')}}">
         <input id="deleteconfid" type="hidden" name="deleteconfid" value="{{ trans('validation.deleteconfirmation.delete_confirmation') }}">
+        <input id="duplicateconfid" type="hidden" name="duplicateconfid" value="{{ trans('validation.duplicateconfirmation.duplicate_confirmation') }}">
         <!-- End of Main Content -->
 
         <!-- Footer -->
@@ -63,7 +64,7 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!-- Modal -->
+<!-- Delete Confirmation Modal -->
 <div class="modal fade" id="exampleModal"
      tabindex="-1"
      aria-labelledby="exampleModalLabel"
@@ -105,6 +106,89 @@
 </div>
 
 
+<!-- Duplicate Confirmation Modal -->
+<div class="modal fade" id="duplicateModal"
+     tabindex="-1"
+     aria-labelledby="duplicateModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h5 class="modal-title"
+                            id="duplicateModalLabel">
+                            {{trans('global.duplicateconfirmation')}}
+                        </h5>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button"
+                                class="close float-left"
+                                data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">
+                                ×
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="modal-body">
+                <h6 id="duplicate_modal_body"></h6>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Duplicate Contract Payments Confirmation Modal -->
+<div class="modal fade" id="duplicatecontractModal"
+     tabindex="-1"
+     aria-labelledby="duplicatecontractModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h5 class="modal-title"
+                            id="duplicateModalLabel">
+                            {{trans('global.contractduplicateconfirmation')}}
+                        </h5>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button"
+                                class="close float-left"
+                                data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">
+                                ×
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="modal-body">
+                <h6 id="cont_duplicate_modal_body"></h6>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Logout Modal-->
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -142,6 +226,7 @@
 <script src="{{ URL::asset('adminassets/vendor/bootbox/bootbox.min.js') }}" type="text/javascript"></script>
 
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" ></script>
+{{--<script src="{{ URL::asset('adminassets/js/lib/data-table/jquery.dataTables.min.js') }}"></script>--}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js"></script>
 
 <script src="{{ URL::asset('js/main.js') }}"></script>

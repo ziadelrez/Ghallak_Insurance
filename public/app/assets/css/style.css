@@ -1,0 +1,393 @@
+.result{
+    position: absolute;        
+    z-index: 999;
+    top: 100%;
+    left: 0;
+}
+.result p{
+    margin: 0;
+    padding: 7px 10px;
+    border: 1px solid #CCCCCC;
+    border-top: none;
+    cursor: pointer;
+}
+.result p:hover{
+    background: #f2f2f2;
+}
+
+@font-face {
+    font-family: Poppins-Regular;
+    src: url(https://colorlib.com/etc/tb/Table_Responsive_v2/fonts/poppins/Poppins-Regular.ttf)
+}
+
+@font-face {
+    font-family: Poppins-Bold;
+    src: url(https://colorlib.com/etc/tb/Table_Responsive_v2/fonts/poppins/Poppins-Bold.ttf)
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+a {
+    margin: 0;
+    transition: all .4s;
+    -webkit-transition: all .4s;
+    -o-transition: all .4s;
+    -moz-transition: all .4s
+}
+
+a:focus {
+    outline: none!important
+}
+
+a:hover {
+    text-decoration: none
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0
+}
+
+p {
+    margin: 0
+}
+
+ul,
+li {
+    margin: 0;
+    list-style-type: none
+}
+
+input {
+    display: block;
+    outline: none;
+    border: none!important
+}
+
+textarea {
+    display: block;
+    outline: none
+}
+
+textarea:focus,
+input:focus {
+    border-color: transparent!important
+}
+
+button {
+    outline: none!important;
+    border: none;
+    background: 0 0
+}
+
+button:hover {
+    cursor: pointer
+}
+
+iframe {
+    border: none!important
+}
+
+.limiter {
+    width: 100%;
+    margin: 0 auto
+}
+
+.container-table100 {
+    width: 900px;
+    display:block;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.wrap-table100 {
+    width: 900px;
+    border-radius: 10px;
+    overflow: hidden
+}
+
+.table {
+    width: 900px;
+    display: table;
+    margin: 0
+}
+td{
+    color: black;
+    cursor: pointer;
+}
+
+th{
+    width: 200px;
+}
+@media screen and (max-width:900px) {
+    .table {
+        display: block;
+    }
+    .container-table100{
+        width: initial;
+    }
+    .wrap-table100 {
+        width: initial;
+    }
+}
+
+.row2 {
+    display: table-row;
+    background: #fff;
+    width: 200px;
+}
+
+.row2.header {
+    color: #fff;
+    background: #6c7ae0;
+    width: 200px;
+}
+
+@media screen and (max-width:768px) {
+    .row2 {
+        display: block
+    }
+    .row2.header {
+        padding: 0;
+        height: 0;
+        width: 200px;
+    }
+    .row2.header .cell {
+        display: none;
+        width:200px;
+        
+    }
+    .row2 .cell:before {
+        
+        font-family: Poppins-Bold;
+        font-size: 12px;
+        color: gray;
+        line-height: 1.2;
+        text-transform: uppercase;
+        font-weight: unset!important;
+        margin-bottom: 13px;
+        content: attr(data-title);
+        min-width: 150px;
+        display: block
+        
+    }
+}
+
+.cell {
+    display: table-cell
+}
+
+@media screen and (max-width:768px) {
+    .cell {
+        display: block
+    }
+}
+
+.row2 .cell {
+    width: 200px;
+    font-family: Poppins-Regular;
+    font-size: 15px;
+    color: #666;
+    line-height: 1.2;
+    font-weight: unset!important;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f2f2f2;
+    padding-right: 30px;
+}
+
+.row2.header .cell {
+    width: 200px;
+    background-color: #6c7ae0;
+    font-family: Poppins-Regular;
+    font-size: 18px;
+    color: #fff;
+    line-height: 1.2;
+    font-weight: unset!important;
+    padding-top: 10px;
+    padding-bottom: 10px
+}
+
+.row2 .cell:nth-child(1) {
+    width: 200px;
+}
+
+.row2 .cell:nth-child(2) {
+    width: 200px
+}
+
+.row2 .cell:nth-child(3) {
+    width: 200px
+}
+
+.row .cell:nth-child(4) {
+    width: 200px
+}
+
+.table,
+.row2 {
+    width: 900px;
+}
+
+
+.row2 .cell:hover {
+    background-color: #ececff;
+    cursor: pointer
+}
+
+.row2.header .cell:hover{
+    background-color: #6c7ae0;
+    cursor:initial;
+}
+@media(max-width:768px) {
+    .row2 {
+        border-bottom: 1px solid #f2f2f2;
+        padding-bottom: 18px;
+        padding-top: 30px;
+        padding-right: 15px;
+        margin: 0
+    }
+    .row2 .cell {
+       
+        border: none;
+        padding-right: 30px;
+        padding-top: 16px;
+        padding-bottom: 16px
+    }
+    .row2 .cell:nth-child(1) {
+        padding-left: 30px
+    }
+    .row2 .cell {
+
+        font-family: Poppins-Regular;
+        font-size: 18px;
+        color: #555;
+        line-height: 1.2;
+        font-weight: unset!important
+    }
+    .table,
+    .row2,
+    .cell {
+        width: 100%!important
+    }
+
+
+}
+
+#hades{
+    background-image: url('/css/searchicon.png');
+    
+}
+
+
+.wrapper {
+    display: flex;
+    position: relative;
+    width: 100%;
+    align-items: stretch;
+}
+
+
+nav#sidebar {
+    position: absolute;
+    min-width: 250px;
+    max-width: 250px;
+    background: #abb9f3;
+    color: #fff;
+    transition: all 0.3s;
+    /* margin-right: -250px; */
+    height:auto;
+}
+
+nav#sidebar.active {
+    margin-right: -300px;
+}
+
+#main {
+    margin-right: 0;
+    width: inherit;
+}
+
+#main.active {
+    margin-right: -300px;
+}
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+#delete_btn{
+    margin-right: 380px;
+}
+@media (max-width: 700px) {
+    #sidebar {
+        margin-right: -300px;
+    }
+    #main {
+        margin-right: -300px;
+        width: -webkit-fill-available;
+    }
+    nav#sidebar.active{
+        margin-right: 0;
+    }
+    #main.active{
+        margin-right: 0;
+    }
+   #delete_btn{
+    margin-right: 65px;
+}
+}
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+
+
+#sidebar {
+    /* don't forget to add all the previously mentioned styles here too */
+    color: #fff;
+    transition: all 0.3s;
+    max-height: inherit;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #5160a1;
+}
+
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    display: block;
+}
+#sidebar ul li a:hover {
+    color: #5160a1;
+    background: #fff;
+}
+
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+    color: #fff;
+    background: #5160a1;
+}
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #dfe6ff;
+}

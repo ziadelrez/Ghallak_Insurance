@@ -45,8 +45,108 @@ class CarsController extends Controller
                ->count();
        }
 
-        return view('pages.cars.index',compact('carslist','carscount'));
+        return view('pages.Cars.index',compact('carslist','carscount'));
    }
+
+
+    public function showcars($clientid)
+    {
+        abort_if(Gate::denies('cars_access'), \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        if (Auth::user()->can('all_access')) {
+//           $brID = Auth::user()->branch_id;
+            $carslist = DB::table('getclientscarslist')
+                ->select('carid', 'carname','carnumber','cartype','caryear','carcolor','carrate','curr')
+               ->where('client','=',$clientid)
+                ->orderBy('carid', 'desc')
+                ->get();
+            $carscount = DB::table('getclientscarslist')
+                ->select('carid', 'carname','carnumber','cartype','caryear','carcolor','carrate','curr')
+                ->where('client','=',$clientid)
+                ->count();
+        }else{
+            $brID = Auth::user()->branch_id;
+            $carslist = DB::table('getclientscarslist')
+                ->select('carid', 'carname','carnumber','cartype','caryear','carcolor','carrate','curr')
+                ->where('branchid','=',$brID)
+                ->where('client','=',$clientid)
+                ->orderBy('carid', 'desc')
+                ->get();
+            $carscount = DB::table('getclientscarslist')
+                ->select('carid', 'carname','carnumber','cartype','caryear','carcolor','carrate','curr')
+                ->where('branchid','=',$brID)
+                ->where('client','=',$clientid)
+                ->count();
+        }
+
+
+        $client_id = $clientid;
+        $getclientname = DB::table('clients')
+            ->select('cname')
+            ->where('id',$client_id)
+            ->get();
+        $client_name = $getclientname[0]->cname;
+
+        return view('pages.Cars.showcars',compact('carslist','carscount','client_name','client_id'));
+    }
+
+    function actionclientscars(Request $request)
+    {
+        $output = '';
+        $output1 = '';
+//            $ifcarsview = '';
+//            $ifcarsimg = '';
+//            $ifcarstransaction = '';
+//            $ifcarsedit = '';
+//            $ifcarsdelete = '';
+//            $rname = '';
+
+
+        $clientid = $request->get('clientid');
+
+
+            $data = DB::table('getclientscarslist')
+                ->where('client', '=',  $clientid)
+                ->orderBy('carid', 'desc')
+                ->get();
+
+        $total_row = $data->count();
+
+        $datatables = Datatables::of($data)
+            ->editColumn('car_id', function ($car) {
+                return $car->carid;
+            })
+            ->editColumn('car_name', function ($car) {
+                return $car->carname ;
+            })
+            ->editColumn('car_number', function ($car) {
+                return $car->carnumber;
+            })
+            ->editColumn('car_type', function ($car) {
+                return $car->cartype;
+            })
+            ->editColumn('car_color', function ($car) {
+                return $car->carcolor;
+            })
+            ->editColumn('car_model', function ($car) {
+                return $car->caryear;
+            })
+            ->editColumn('car_rates', function ($car) {
+                return $car->carrate . ' ' . $car->curr;
+            })
+            ->editColumn('car_action', function ($car) {
+                $buttons = "";
+                if (Auth::user()->can('cars_edit')) {
+                    $buttons .= '<a class="btn btn-warning btn-sm" title="'. trans('page-cars.cars.titles.edit') .'" href="'. route('cars.edit', $car -> carid) .'"><i class="fa fa-edit"></i></a> ';
+                }
+                if (Auth::user()->can('cars_delete')) {
+                    $buttons .= '<button class="btn btn-danger btn-sm" title="'. trans('page-cars.cars.titles.delete') .'" data-id="'.$car -> carid.'" data-title="'.$car -> carname.'"><i class="fas fa-trash"></i></button>';
+                }
+                return $buttons;
+            })->rawColumns(['car_action']);
+
+        return $datatables->make(true);
+    }
 
     function action(Request $request)
     {
@@ -110,7 +210,7 @@ class CarsController extends Controller
                     return $car->carid;
                 })
                 ->editColumn('car_name', function ($car) {
-                    return $car->carname;
+                        return $car->carname ;
                 })
                 ->editColumn('car_number', function ($car) {
                     return $car->carnumber;
@@ -129,7 +229,7 @@ class CarsController extends Controller
                 })
                 ->editColumn('car_photo', function ($car) {
                     if(isset($car -> img_filename)) {
-                        $ifimage = asset('/files/cars/'. $car->carid . '/' . $car->img_filename);
+                        $ifimage = asset('/files/clients/'. $car->carid . '/' . $car->img_filename);
                         return '<img src='.$ifimage.' style="width: 70px; height: 70px;" class="img-circle">';
                     }else{
                         $ifimage = asset('/files/images/no-photo.jpg');
@@ -154,7 +254,7 @@ class CarsController extends Controller
         return $datatables->make(true);
     }
 
-    public function create()
+    public function create($clientid)
     {
         abort_if(Gate::denies('cars_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $data['cartypelist'] = DB::table('cartype')
@@ -169,7 +269,11 @@ class CarsController extends Controller
             ->select('id', 'Description')
             ->get();
 
-        $data['carenginelist'] = DB::table('carsenginetype')
+        $data['carsenginetypelist'] = DB::table('carsenginetype')
+            ->select('id', 'Description')
+            ->get();
+
+        $data['carsuselist'] = DB::table('carsuse')
             ->select('id', 'Description')
             ->get();
 
@@ -181,22 +285,35 @@ class CarsController extends Controller
             ->select('id', 'Description')
             ->get();
 
-        $data['setcurr'] = DB::table('Settings')
-            ->select('curr')
+        $data['currlist'] = DB::table('currency')
+            ->select('id','currname_eng')
             ->get();
 
-       $data['currlist'] = DB::table('currency')
-           ->select('id', 'currname_ara')
-           ->where('id','=',$data['setcurr'][0]->curr)
-           ->get();
+//       $data['currlist'] = DB::table('currency')
+//           ->select('id', 'currname_ara')
+//           ->where('id','=',$data['setcurr'][0]->curr)
+//           ->get();
 
-        $data['branchlist'] = DB::table('branch')
-            ->select('id', 'name')
+//        $data['branchlist'] = DB::table('branch')
+//            ->select('id', 'name')
+//            ->get();
+
+
+//        $data['getclientinfo'] = DB::table('clients')
+//            ->select('id','cname')
+//            ->where('id','=',$clientid)
+//            ->get();
+
+             $getclientinfo = DB::table('clients')
+            ->select('id','cname')
+            ->where('id','=',$clientid)
             ->get();
 
+             $clid = $getclientinfo[0]->id;
+             $clname = $getclientinfo[0]->cname;
 
 //        $brID = Auth::user()->branch_id;
-       return view('pages.cars.create', $data);
+       return view('pages.Cars.create', $data)->with(compact('clid','clname'));
     }
 
     public function addNewValueDEF(Request $request)
@@ -239,13 +356,13 @@ class CarsController extends Controller
                 $values_to_insert = [
                     'Description' => $request->get('description'),
                 ];
-                $id = DB::table('carsenginetype')->insertGetId($values_to_insert);
+                $id = DB::table('carsuse')->insertGetId($values_to_insert);
                 return response()->json(['id'=> $id , 'success' => 'Record is successfully added']);
             }elseif($tbid == "6"){
                 $values_to_insert = [
                     'Description' => $request->get('description'),
                 ];
-                $id = DB::table('carsspecs')->insertGetId($values_to_insert);
+                $id = DB::table('carsenginetype')->insertGetId($values_to_insert);
                 return response()->json(['id'=> $id , 'success' => 'Record is successfully added']);
             }elseif($tbid == "7"){
                 $values_to_insert = [
@@ -257,67 +374,32 @@ class CarsController extends Controller
         }
     }
 
-    public function store(StoreCarsRequest $request)
+    public function store(Request $request)
     {
         if ($request->isMethod("POST")) {
-
+            $bIds = Auth::user()->branch_id;
            $values_to_insert = [
+               'client' => $request->get('clientid'),
                'carname' => $request->get('carname'),
                'platnumber' => $request->get('platnumber'),
+               'enginetype' => $request->get('enginetype'),
                'cartype' => $request->get('cartype'),
                'carmodel' => $request->get('carmodel'),
-               'enginetype' => $request->get('carenginetype'),
                'carcolor' => $request->get('carcolor'),
                'chanum' => $request->get('chanum'),
                'engnum' => $request->get('engnum'),
                'carrate' => $request->get('carrate'),
                'curr' => $request->get('curr'),
-               'carused' => $request->get('carused'),
-               'carstop' => $request->get('carstop') ? true : false,
-//               'img_filename' => $request->get('photo'),
-//               'img_extension' => $request->get('carimage'),
-               'stopdate' => $request->get('stopdate'),
                'passenger' => $request->get('passenger'),
-               'bags' => $request->get('bags'),
-               'doors' => $request->get('doors'),
-               'transmission' => $request->get('transmission'),
-               'branch'=> $request->get('branch_id'),
+               'carused' => $request->get('carsuses'),
+               'branch'=> $bIds,
                'created_by'=> Auth::user()->id,
                'created_at' => date('Y-m-d'),
            ];
 
-           $carid = DB::table('cars')->insertGetId($values_to_insert);
-
-            $counter = 1;
-            $path_info = pathinfo($request->file('photo')->getClientOriginalName());
-            $file_name = $path_info["filename"];
-            $extension = $path_info["extension"];
-
-
-            while (file_exists(public_path() . '/files/cars/'. $carid . '/' . $file_name . '.' . $extension)) {
-                $file_name = $path_info["filename"] . '_' . $counter;
-                $counter++;
-            }
-            if ($request->file('photo')->isValid()) {
-                $request->file('photo')->move('files/cars/' . $carid, $file_name . '.' . $extension);
-
-                DB::table('cars')
-                    ->where('id', $carid)
-                    ->update([
-                        'img_filename' => $file_name . '.' . $extension,
-                        'img_extention' => $extension,
-                    ]);
-
-                foreach($request->carsspecs as $specsid) {
-                    $values_to_insert_specs = [
-                        'car_id'   => $carid,
-                        'carspecs_id' => $specsid,
-                    ];
-                    DB::table('cars_specs')->insert($values_to_insert_specs);
-                }
-            }
+          DB::table('cars')->insert($values_to_insert);
         }
-        return redirect()->route('cars-list');
+        return redirect()->route('clients.showcars', $request->get('clientid'));
     }
 
     public function edit($carsid)
@@ -332,11 +414,15 @@ class CarsController extends Controller
             ->select('id', 'Description')
             ->get();
 
+        $data['carsenginetypelist'] = DB::table('carsenginetype')
+            ->select('id', 'Description')
+            ->get();
+
         $data['carcolorlist'] = DB::table('carcolors')
             ->select('id', 'Description')
             ->get();
 
-        $data['carenginelist'] = DB::table('carsenginetype')
+        $data['carsuselist'] = DB::table('carsuse')
             ->select('id', 'Description')
             ->get();
 
@@ -348,80 +434,52 @@ class CarsController extends Controller
             ->select('id', 'Description')
             ->get();
 
-        $data['setcurr'] = DB::table('Settings')
-            ->select('curr')
-            ->get();
-
         $data['currlist'] = DB::table('currency')
-            ->select('id', 'currname_ara')
-            ->where('id','=',$data['setcurr'][0]->curr)
+            ->select('id','currname_eng')
             ->get();
 
-//        $data['slist'] = DB::table('cars_specs')
-//            ->select('carspecs_id')
-//            ->where('car_id',$carsid)
+//       $data['currlist'] = DB::table('currency')
+//           ->select('id', 'currname_ara')
+//           ->where('id','=',$data['setcurr'][0]->curr)
+//           ->get();
+
+//        $data['branchlist'] = DB::table('branch')
+//            ->select('id', 'name')
 //            ->get();
 
-        $slist = DB::table('cars_specs')
-            ->select('carspecs_id')
-            ->where('car_id',$carsid)
-            ->get();
-
-
-        $data['branchlist'] = DB::table('branch')
-            ->select('id', 'name')
-            ->get();
-
-        $slist1 = collect($slist)->pluck('carspecs_id');
-
-        $data['slist2'] = $slist1;
-
-//        dd($data['slist2']);
-
-//       $list=array_combine($data['carspecslist'], $data['slist']);
-
-//        $data['specslist'] = explode(',', $slist);
-//
-//        dd($list);
-//
-//        echo '<pre>';
-//        print_r($data['specslist']);
-//        echo '</pre>';
 
         $data['carsdetails'] = DB::table('cars')
-            ->select('id', 'carname','platnumber','cartype','carmodel','enginetype', 'carcolor', 'chanum', 'engnum', 'carrate', 'curr', 'carused', 'carstop','passenger','bags','doors','transmission','stopdate','branch','img_filename')
+            ->select('id','client', 'carname','platnumber','enginetype','cartype','carmodel','carused', 'carcolor', 'chanum', 'engnum', 'carrate', 'curr','passenger')
             ->where('id',$carsid)
             ->get();
 
-        return view('pages.cars.edit',$data);
+        $data['clientname'] = DB::table('clients')
+           ->select('id', 'cname')
+           ->where('id','=',$data['carsdetails'][0]->client)
+           ->get();
+
+        return view('pages.Cars.edit',$data);
 //        ->with($slist);
     }
 
-    public function update(UpdateCarsRequest $request, $carsid)
+    public function update(Request $request, $carsid)
     {
         if ($request->isMethod("POST")) {
 
             $values_to_update = [
                 'carname' => $request->get('carname'),
                 'platnumber' => $request->get('platnumber'),
+                'enginetype' => $request->get('enginetype'),
                 'cartype' => $request->get('cartype'),
                 'carmodel' => $request->get('carmodel'),
-                'enginetype' => $request->get('carenginetype'),
                 'carcolor' => $request->get('carcolor'),
                 'chanum' => $request->get('chanum'),
                 'engnum' => $request->get('engnum'),
                 'carrate' => $request->get('carrate'),
                 'curr' => $request->get('curr'),
-                'carused' => $request->get('carused'),
-                'carstop' => $request->get('carstop') ? true : false,
-//               'img_filename' => $request->get('photo'),
-//               'img_extension' => $request->get('carimage'),
-                'stopdate' => $request->get('stopdate'),
                 'passenger' => $request->get('passenger'),
-                'bags' => $request->get('bags'),
-                'doors' => $request->get('doors'),
-                'transmission' => $request->get('transmission'),
-                'branch'=> $request->get('branch'),
+                'carused' => $request->get('carsuses'),
+//                'branch'=> $request->get('branch'),
                 'updated_by'=> Auth::user()->id,
                 'updated_at' => date('Y-m-d'),
             ];
@@ -430,42 +488,9 @@ class CarsController extends Controller
             ->where('id', '=', $carsid)
             ->update($values_to_update);
 
-            if($request->hasFile('photo')) {
-                $counter = 1;
-                    $path_info = pathinfo($request->file('photo')->getClientOriginalName());
-                    $file_name = $path_info["filename"];
-                    $extension = $path_info["extension"];
-
-
-                    while (file_exists(public_path() . '/files/cars/'. $carsid . '/' . $file_name . '.' . $extension)) {
-                        $file_name = $path_info["filename"] . '_' . $counter;
-                        $counter++;
-                    }
-                    if ($request->file('photo')->isValid()) {
-                        $request->file('photo')->move('files/cars/' . $carsid, $file_name . '.' . $extension);
-
-                        DB::table('cars')
-                            ->where('id', $carsid)
-                            ->update([
-                                'img_filename' => $file_name . '.' . $extension,
-                                'img_extention' => $extension,
-                            ]);
-                    }
-            }
-                DB::table('cars_specs')
-                    ->where('car_id', $carsid)
-                    ->delete();
-
-                foreach($request->carsspecs as $specsid) {
-                    $values_to_insert_specs = [
-                        'car_id'   => $carsid,
-                        'carspecs_id' => $specsid,
-                    ];
-                    DB::table('cars_specs')->insert($values_to_insert_specs);
-                }
-
+            $client_id = $request->get('clientid');
         }
-        return redirect()->route('cars-list');
+        return redirect()->route('clients.showcars',$client_id );
     }
 
     public function show($clientid)
@@ -497,17 +522,18 @@ class CarsController extends Controller
             ->where('id',$clientid)
             ->get();
 
-        return view('pages.clients.show',compact('reglist','ctypelist','nlist','bplacelist','passplacelist','clientdetails'));
+        return view('pages.Clients.show',compact('reglist','ctypelist','nlist','bplacelist','passplacelist','clientdetails'));
     }
 
     public function deletecars(Request $request){
+
         $getcount1 = DB::table('carcollection')
             ->where('carid','=',$request->get('id'))
             ->get();
         $count1 = $getcount1->count();
 
         $getcount = DB::table('condet')
-            ->where('car','=',$request->get('id'))
+            ->where('carid','=',$request->get('id'))
             ->get();
         $count = $getcount->count();
 
@@ -550,7 +576,7 @@ class CarsController extends Controller
             ->get();
         $client_name = $getclientname[0]->cname;
 
-        return view('pages.clients.license',compact('passplacelist','licensedetails','client_id','client_name'));
+        return view('pages.Clients.license',compact('passplacelist','licensedetails','client_id','client_name'));
     }
 
     public function addlicenses(Request $request){
@@ -706,7 +732,7 @@ class CarsController extends Controller
             ->get();
         $client_name = $getclientname[0]->cname;
 
-        return view('pages.clients.attach_client',compact('docdetails','client_id','client_name'));
+        return view('pages.Clients.attach_client',compact('docdetails','client_id','client_name'));
     }
 
     function caruploadimg(Request $request)
@@ -720,12 +746,12 @@ class CarsController extends Controller
         $extension = $path_info["extension"];
 
 
-        while (file_exists(public_path() . '/files/cars/'. $request->get('car_id') . '/' . $file_name . '.' . $extension)) {
+        while (file_exists(public_path() . '/files/clients/'. $request->get('car_id') . '/' . $file_name . '.' . $extension)) {
         $file_name = $path_info["filename"] . '_' . $counter;
         $counter++;
     }
         if ($request->file('file')->isValid()) {
-            $request->file('file')->move('files/cars/' . $request->get('car_id'), $file_name . '.' . $extension);
+            $request->file('file')->move('files/clients/' . $request->get('car_id'), $file_name . '.' . $extension);
 
             DB::table('cars')
                 ->where('id', $request->get('car_id'))
@@ -750,7 +776,7 @@ class CarsController extends Controller
 
     public function image_delete_file(Request $request,$carid){
         $filename = $request->id;
-        $path_image = public_path() . '/files/cars/'. $carid . '/' . $filename;
+        $path_image = public_path() . '/files/clients/'. $carid . '/' . $filename;
 
         if (file_exists($path_image)) {
             unlink($path_image);
@@ -810,24 +836,24 @@ class CarsController extends Controller
         }
     }
 
-    public function attachimages($carsid)
+    public function attachimages($clientid)
     {
         abort_if(Gate::denies('clients_attach_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $cars_ids = $carsid;
+        $client_id = $clientid;
         $getattachfiles = DB::table('carcollection')
             ->select('file_type','file_name','file_extention')
-            ->where('id',$cars_ids)
+            ->where('carid',$client_id)
             ->get();
 
-        $carname = DB::table('cars')
-            ->select('carname')
-            ->where('id',$cars_ids)
+        $clientname = DB::table('clients')
+            ->select('cname')
+            ->where('id',$client_id)
             ->get();
 
 
 //        $brID = Auth::user()->branch_id;
-        return view('pages.cars.attachimages',compact('cars_ids','getattachfiles','carname'));
+        return view('pages.Cars.attachimages',compact('client_id','getattachfiles','clientname'));
     }
 
     public function storeIMAGES(Request $request)
@@ -847,13 +873,13 @@ class CarsController extends Controller
         $file_name = $path_info["filename"];
         $extension = $path_info["extension"];
 
-        while (file_exists(public_path() . '/files/cars/'.$request->get('car_id').'/' . $file_type. '/' . $file_name . '.' . $extension)) {
+        while (file_exists(public_path() . '/files/clients/'.$request->get('car_id').'/' . $file_type. '/' . $file_name . '.' . $extension)) {
             $file_name = $path_info["filename"] . '_' . $counter;
             $counter++;
         }
 
         if ($request->file('file')->isValid()) {
-            $request->file('file')->move('files/cars/'.$request->get('car_id').'/' . $file_type, $file_name . '.' . $extension);
+            $request->file('file')->move('files/clients/'.$request->get('car_id').'/' . $file_type, $file_name . '.' . $extension);
 
             $values_to_insert = [
                 'carid' =>  $request->get('car_id'),
@@ -884,13 +910,15 @@ class CarsController extends Controller
         if($total_row > 0) {
             $rflag = "1";
             foreach ($filestlist as $row) {
-                $path = url('/files/cars/'.$row->carid. '/' .$row->file_type. '/' .$row->file_name);
-                if ($row->file_extention == "pdf" || $row->file_extention == "txt") {
-                    $button1 = '<a data-id="' . $row->id. '" class="btn btn-outline-primary btn-xs asDoc" href="javascript:;" data-path="' . $path . '"  ><i class="fa fa-search-plus"></i></a>';
-                }else{
+                $path = url('/files/clients/'.$row->carid. '/' .$row->file_type. '/' .$row->file_name);
+                if ($row->file_extention == "jpg" || $row->file_extention == "jpeg" || $row->file_extention == "png" || $row->file_extention == "gif") {
                     $button1 = '<a data-id="' . $row->id . '" class="btn btn-outline-primary btn-xs asImage" href="' . $path . '" data-featherlight="' . $path . '" ><i class="fa fa-search-plus"></i></a>';
+                }elseif ($row->file_extention == "pdf") {
+                    $button1 = '<a data-id="' . $row->id. '" class="btn btn-outline-primary btn-xs asPdf" href="javascript:;" data-path="' . $path . '"  ><i class="fa fa-search-plus"></i></a>';
+                }else{
+                    $button1 = '<a data-id="' . $row->id. '" class="btn btn-outline-primary btn-xs" href="'. $path .'" data-path="' . $path . '"  ><i class="fa fa-search-plus"></i></a>';
                 }
-                $button2 = '<a data-id="' . $row->id . '" target="_blank" class="btn btn-outline-success btn-xs" href="' . url('/download-patient-files/' . $row->id) . '"><i class="fa fa-download"></i></a> ';
+                $button2 = '<a data-id="' . $row->id . '" target="_blank" class="btn btn-outline-success btn-xs" href="' . url('/download-client-files/' . $row->id) . '"><i class="fa fa-download"></i></a> ';
                 $button3 = '<a data-id="' . $row->id . '" class="btn btn-outline-danger btn-xs"  href="javascript:;"><i class="fa fa-trash"></i> </a>';
 
                 $output1 .=' <tr class="filesrows'.$row->id.'">
@@ -964,7 +992,7 @@ class CarsController extends Controller
         $row = DB::table('carcollection')
             ->where('id','=',$id)->first();
 
-        $path = 'files/cars/'.$row->carid. '/' .$row->file_type. '/' .$row->file_name;
+        $path = 'files/clients/'.$row->carid. '/' .$row->file_type. '/' .$row->file_name;
 
         return response()->download($path);
     }
@@ -974,7 +1002,7 @@ class CarsController extends Controller
         $row = DB::table('carcollection')
             ->where('id','=',$request->get('fid'))->first();
 
-        $path = 'files/cars/'.$row->carid. '/' .$row->file_type. '/' .$row->file_name;
+        $path = 'files/clients/'.$row->carid. '/' .$row->file_type. '/' .$row->file_name;
 
         if (File::exists($path)) {
             File::delete($path);
@@ -984,6 +1012,26 @@ class CarsController extends Controller
             return response()->json(['data' => 'ok']);
         }
 
+    }
+
+    public function getcarnumbervalide(Request $request){
+        $carvalide = DB::table('cars')
+            ->select('id','platnumber')
+            ->where('platnumber','=',$request->get('carnumber'))
+            ->get();
+        $count = $carvalide->count();
+
+        if( $count > 0) {
+            $flag = "1";
+            $rec1 = $carvalide[0]->platnumber;
+            $rec2 = $flag;
+        }else{
+            $flag = "0";
+            $rec1 = "-";
+            $rec2 = $flag;
+        }
+
+        return response()->json(['status'=>$rec1,'flag'=>$rec2]);
     }
 
 }

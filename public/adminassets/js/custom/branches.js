@@ -3,6 +3,12 @@ $(document).ready(function () {
         placeholder: "إختر مكان الفرع",
         allowClear: true
     });
+
+    $(".selectionbrtype").select2({
+        placeholder: "إختر نوع الفرع",
+        allowClear: true
+    });
+
 });
 $(document).on('click','.create-modal', function() {
     $('#create').modal('show');
@@ -10,9 +16,11 @@ $(document).on('click','.create-modal', function() {
     $('#err_details_location').hide()
     $('#err_details_landline').hide()
     $('#err_details_mobile').hide()
+    $('#err_details_brtype').hide()
     $('#create #brname').val('');
     // $('#create #location').val('');
     $('#create #location').val('').trigger('change');
+    $('#create #brtype').val('').trigger('change');
     $('#create #landline').val('');
     $('#create #mobile').val('');
     // $('#create #photo').val('');
@@ -30,7 +38,8 @@ $("#add").click(function() {
             'brname': $('input[name=brname]').val(),
             'location': $('#location option:selected').attr("value"),
             'landline': $('input[name=landline]').val(),
-            'mobile': $('input[name=mobile]').val()
+            'mobile': $('input[name=mobile]').val(),
+            'brtype': $('#brtype option:selected').attr("value")
         },
         success: function(data){
             // console.log(data)
@@ -44,9 +53,12 @@ $("#add").click(function() {
                 $('#err_details_location').remove()
                 $('#err_details_landline').remove()
                 $('#err_details_mobile').remove()
+                $('#err_details_brtype').remove()
                 $('#table').append('<tr class="brrows' + data.id +'">'+
                     '<td style="display:none;">' + data.id + '</td>'+
-                    '<td>' + data.brname + ' - ' + data.location + '</td>'+
+                    '<td>' + data.brname  + '</td>'+
+                    '<td>' + data.location + '</td>'+
+                    '<td>' + data.brtype + '</td>'+
                     '<td class="text-center" >' +
                     '<button class="edit-modal btn btn-warning btn-sm" data-id='+ data.id + ' data-title=' + data.brname + ' ><i class="fa fa-edit"></i> </button>'  + ' ' +
                     '<button class="delete-modal btn btn-danger btn-sm" data-id='+ data.id + ' data-title=' + data.brname + ' ><i class="fa fa-trash"></i> </button>' + '</td>'+
@@ -57,6 +69,7 @@ $("#add").click(function() {
                 $("#create #location").val('').trigger('change')
                 $('#landline').val('');
                 $('#mobile').val('');
+                $("#create #brtype").val('').trigger('change')
                 $('#brname').focus();
             }
         },
@@ -69,6 +82,7 @@ $(document).on('click', '.edit-modal', function() {
     $("#myModal #editlocation").val('').trigger('change')
     $('#myModal #editlandline').val('');
     $('#myModal #editmobile').val('');
+    $("#myModal #editbrtype").val('').trigger('change')
     $('#footer_action_button').text(" تعديل");
     $('#footer_action_button').addClass('fa-check');
     $('#footer_action_button').removeClass('fa-trash');
@@ -95,7 +109,8 @@ $('.modal-footer').on('click', '.edit', function() {
             'brname': $('input[name=editbrname]').val(),
             'location': $('#myModal #editlocation option:selected').attr("value"),
             'landline': $('input[name=editlandline]').val(),
-            'mobile': $('input[name=editmobile]').val()
+            'mobile': $('input[name=editmobile]').val(),
+            'brtype': $('#myModal #editbrtype option:selected').attr("value"),
         },
         success: function(data) {
             if ((data.errors)) {
@@ -109,7 +124,9 @@ $('.modal-footer').on('click', '.edit', function() {
                 $('.brrows' + data.id).replaceWith(" " +
                         '<tr class="brrows' + data.id +'">'+
                         '<td style="display:none;">' + data.id + '</td>'+
-                        '<td>' + data.brname + ' - ' + data.location + '</td>'+
+                        '<td>' + data.brname  + '</td>'+
+                        '<td>' + data.location + '</td>'+
+                        '<td>' + data.brtype + '</td>'+
                         '<td class="text-center" >' +
                         '<button class="edit-modal btn btn-warning btn-sm" data-id='+ data.id + ' data-title=' + data.brname + ' ><i class="fa fa-edit"></i> </button>'  + ' ' +
                         '<button class="delete-modal btn btn-danger btn-sm" data-id='+ data.id + ' data-title=' + data.brname + ' ><i class="fa fa-trash"></i> </button>' + '</td>'+
@@ -192,6 +209,7 @@ function getData(gid) {
             // $('#myModal #editlocation').val(data.locname);
             $('#myModal #editlandline').val(data.brlandline);
             $('#myModal #editmobile').val(data.brmobile);
+            $('#myModal #editbrtype').select2('data', {id: data.brtypeid, a_key: data.brtype}).change();
             // $("#myModal .btn-success").attr("gid",gid)
         }
     });

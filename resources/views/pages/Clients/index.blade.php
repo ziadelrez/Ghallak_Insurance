@@ -2,7 +2,7 @@
 
 
 @section('title')
-    {{ trans('page-client.clients.title') }}
+    {{ trans('page-client.clients.clientlist') }}
 @endsection
 
 
@@ -41,73 +41,19 @@
                         <table class="table table-bordered" id="table" width="100%" cellspacing="0">
                             <thead>
                             <tr>
-                                <th width="150px" style="display:none;" >{{ trans('page-client.clients.tables.id') }}</th>
-                                <th width="200px">{{ trans('page-client.clients.tables.name') }}</th>
-                                <th class="text-center" width="100px" >{{ trans('page-client.clients.tables.mobile') }}</th>
-                                <th width="120px">{{ trans('page-client.clients.tables.region') }}</th>
-                                <th class="text-center" width="120px" style="display:none;">{{ trans('page-client.clients.tables.client_type') }}</th>
-                                <th class="text-center" width="200px">{{ trans('page-client.clients.tables.actions') }}</th>
+                                <th class="align-middle" width="150px" style="display:none;" >{{ trans('page-client.clients.tables.id') }}</th>
+                                <th class="align-middle" width="200px">{{ trans('page-client.clients.tables.eval') }}</th>
+                                <th class="align-middle" width="200px">{{ trans('page-client.clients.tables.name') }}</th>
+                                <th class="align-middle" width="200px">{{ trans('page-client.clients.tables.followby') }}</th>
+                                <th class="align-middle" width="100px" >{{ trans('page-client.clients.tables.mobile') }}</th>
+                                <th class="align-middle" width="250px">{{ trans('page-client.clients.tables.branch') }}</th>
+                                <th class="align-middle" width="500px">{{ trans('page-client.clients.tables.actions') }}</th>
                                 @can('contract_access')
-                                <th class="text-center" width="200px">{{ trans('page-client.clients.tables.contractactions') }}</th>
+                                <th class="align-middle" width="250px">{{ trans('page-client.clients.tables.contractactions') }}</th>
                                 @endcan
                             </tr>
                             </thead>
 
-                            <tbody>
-                            @foreach($clientslist as $clist)
-                                <tr class="clrows{{$clist -> id}}">
-                                    <td style="display:none;" >{{$clist -> id}}</td>
-                                    <td>{{$clist -> cname}}</td>
-                                    <td class="text-center">{{$clist -> cmob}}</td>
-                                    <td>{{$clist -> region}}</td>
-                                    <td class="text-center" style="display:none;">{{$clist -> client_type}}</td>
-                                    <td class="text-center">
-                                        @can('clients_view')
-                                            <a class="btn btn-info btn-sm" title="{{ trans('page-client.clients.titles.view') }}"  href="{{ route('clients.show', $clist->id) }}">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                        @endcan
-
-                                        @can('clients_license_access')
-                                            <a class="btn btn-primary btn-sm" title="{{ trans('page-client.clients.titles.license') }}" href="{{ route('clients.licenses', $clist->id) }}">
-                                                <i class="fas fa-id-badge"></i>
-                                            </a>
-                                        @endcan
-
-                                        @can('clients_attach_access')
-                                            <a class="btn btn-success btn-sm" title="{{ trans('page-client.clients.titles.docs') }}" href="{{ route('clients.docs', $clist->id) }}">
-                                                <i class="fas fa-file-alt"></i>
-                                            </a>
-                                        @endcan
-
-                                        @can('clients_edit')
-                                            <a class="btn btn-warning btn-sm" title="{{ trans('page-client.clients.titles.edit') }}" href="{{ route('clients.edit', $clist->id) }}">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                        @endcan
-
-                                        @can('clients_delete')
-                                            <button class="delete-modal btn btn-danger btn-sm" title="{{ trans('page-client.clients.titles.delete') }}" data-id="{{$clist->id}}" data-title="{{$clist->cname}}" >
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        @endcan
-                                    </td>
-                                    @can('contract_access')
-                                        <td class="text-center">
-                                                <a class="btn btn-primary btn-sm"  href="{{ route('contract-client', $clist->id) }}">
-                                                    <i class="fas fa-th-list"></i>
-                                                    {{ trans('page-client.clients.buttons.btnaddcontact') }}
-                                                </a>
-                                            @can('contract_payment')
-                                                <a href="{{ route('payment-client',$clist -> id)}}" class="btn btn-success btn-sm" title="{{ trans('page-contract.contract.titles.cpayments') }}">
-                                                    <i class="fa fa-dollar-sign"></i>
-                                                </a>
-                                            @endcan
-                                        </td>
-                                    @endcan
-                                </tr>
-                            @endforeach
-                            </tbody>
                         </table>
                     </div>
                 </div>

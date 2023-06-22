@@ -19,7 +19,7 @@
     @include('includes.adminpanel.header')
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <div class="modal fade" id="doc_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div class="modal fade" id="pdf_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -40,6 +40,35 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
+    <div class="modal fade" id="doc_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">{{ trans('page-cars.cars.filepreview') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="divDocEmbed" style="height: 480px;">
+                        <iframe src=""
+                                name="iframe1"
+                                width="70%"
+                                height="250">
+                        </iframe>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-circle default"><i
+                            class="fa fa-times-circle"></i> {{ trans('page-cars.cars.closemodal') }}
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
     <div class="breadcrumbs">
 
         <div class="col-sm-8">
@@ -58,8 +87,8 @@
                 <div class="col-12">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route("cars-list") }}">{{ trans('global.backtocars') }}</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">{{ trans('page-cars.cars.titleattach') }}<span style="color:black"> : </span><span style="color:red">{{$carname[0]->carname}}</span ></li>
+                            <li class="breadcrumb-item"><a href="{{ route("clients-list") }}">{{ trans('global.backtoclient') }}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ trans('page-cars.cars.titleattach') }}<span style="color:black"> : </span><span style="color:red">{{$clientname[0]->cname}}</span ></li>
                         </ol>
                     </nav>
                 </div>
@@ -163,7 +192,7 @@
         </div><!-- .animated -->
         <div class="hide" id="hidden-values">
 {{--            <input id="p_route" type="hidden" value="{{ route('cars.files') }}">--}}
-            <input id="car-id" type="hidden" name="car-id" value="{{$cars_ids}}">
+            <input id="car-id" type="hidden" name="car-id" value="{{$client_id}}">
 {{--            <input id="pv_route" type="hidden" value="{!! route('') !!}">--}}
 {{--            <input id="deleteFile" type="hidden" value="{{url('')}}">--}}
 {{--            <input id="general_def_quick" type="hidden" value="{{url('')}}">--}}

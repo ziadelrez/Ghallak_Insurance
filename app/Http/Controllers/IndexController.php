@@ -16,19 +16,24 @@ class IndexController extends Controller
     public function index()
     {
 
-        $carslist = DB::table('getcarslist')
-            ->select('carid', 'carname','carnumber','cartype','caryear','carcolor','img_filename','carrate','curr')
-//               ->where('branchid','=',$brID)
-            ->orderBy('carid', 'desc')
+        $data['ptype'] = DB::table('planstype')
+            ->select('id', 'Description')
             ->get();
-        $carscount = DB::table('getcarslist')
-            ->select('carid', 'carname','carnumber','cartype','caryear','carcolor','img_filename','carrate','curr')
-//               ->where('branchid','=',$brID)
-            ->count();
 
-        return view('index',compact('carslist','carscount'));
+        $data['inslist'] = DB::table('insname_type')
+            ->select('insid', 'insname','instype','details')
+            ->get();
+
+        $data['complist'] = DB::table('companies')
+            ->select('id', 'compname')
+            ->get();
+
+        return view('index',$data);
     }
 
+    public function insurancellist(){
+        return view('insurancellist');
+    }
     public function getcarcollections()
     {
         $data['carslist'] = DB::table('getcarslist')

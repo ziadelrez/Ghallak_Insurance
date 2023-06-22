@@ -21,7 +21,7 @@ class UsersController extends Controller
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::where('branch_id',$id)->get();
+        $users = User::where('branch_id',$id)->where('display', '=', "1")->get();
         $value = $id;
 
         $brdetails = DB::table('branch')
@@ -39,7 +39,7 @@ class UsersController extends Controller
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
 //        $users = User::all();
-        $users = User::where('branch_id', '!=', 999999)->get();
+        $users = User::where('display', '=', "1")->get();
         return view('adminpanel.users.index', compact('users'));
     }
 
@@ -47,7 +47,7 @@ class UsersController extends Controller
     {
         abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $roles = Role::all()->pluck('title', 'id');
+        $roles = Role::where('display', '=', "1")->pluck('title', 'id');
 
         return view('adminpanel.users.create', compact('roles','id'));
     }
@@ -64,7 +64,7 @@ class UsersController extends Controller
     {
         abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $roles = Role::all()->pluck('title', 'id');
+        $roles = Role::where('display', '=', "1")->pluck('title', 'id');
 
         $user->load('roles');
 
@@ -84,6 +84,33 @@ class UsersController extends Controller
         $user->roles()->sync($request->input('roles', []));
 
         return redirect()->route('adminpanel.busers',$request->branch_id);
+//        return redirect()->route('login');
+    }
+
+    public function useredit(User $user)
+    {
+        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $roles = Role::all()->pluck('title', 'id');
+
+        $user->load('roles');
+
+        $brids = DB::table('users')
+            ->select('branch_id')
+            ->where('id','=',$user->id)
+            ->get();
+
+        $idbr = $brids[0]->branch_id;
+
+        return view('adminpanel.users.edituser', compact('roles', 'user','idbr'));
+    }
+
+    public function updateusers(UpdateUserRequest $request, User $user)
+    {
+        $user->update($request->all());
+        $user->roles()->sync($request->input('roles', []));
+
+        return redirect()->route('login');
     }
 
     public function show(User $user)
@@ -97,10 +124,10 @@ class UsersController extends Controller
 
     public function deleteuser(Request $request){
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $getcount1 = DB::table('role_user')
-            ->where('user_id','=',$request->get('id'))
-            ->get();
-        $count1 = $getcount1->count();
+//        $getcount1 = DB::table('role_user')
+//            ->where('user_id','=',$request->get('id'))
+//            ->get();
+//        $count1 = $getcount1->count();
 
         $getcount2 = DB::table('branch')
             ->where('created_by','=',$request->get('id'))
@@ -124,7 +151,7 @@ class UsersController extends Controller
 
 //
 
-        if($count1 == 0  && $count2 == 0 && $count3 == 0 && $count4 == 0 && $count5 == 0) {
+        if($count2 == 0 && $count3 == 0 && $count4 == 0 && $count5 == 0) {
             DB::table('users')
                 ->where('id','=', $request->get('id'))
                 ->delete();

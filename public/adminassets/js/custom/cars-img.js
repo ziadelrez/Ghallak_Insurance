@@ -4,6 +4,7 @@ $(document).ready(function () {
 });
 
 Dropzone.options.myDropzone = {
+    acceptedFiles: ".docx,.jpg,.jpeg,.doc,.pdf,.xlsx,.xls",
     init: function() {
         this.on("addedfile", function(file) {
 
@@ -47,10 +48,15 @@ Dropzone.options.myDropzone = {
         this.on("success", function (file, response) {
             getcarsfiles($('#car-id').val());
         });
+
+        this.on("error", function(file, message, xhr) {
+            if (xhr === null) this.removeFile(file); // perhaps not remove on xhr errors
+            alert(message);
+        });
     },
 };
 
-$('#table').on("click", '.asDoc', function () {
+$('#table').on("click", '.asPdf', function () {
     var Path = $(this).attr('data-path');
 
     var Options =
@@ -67,6 +73,12 @@ $('#table').on("click", '.asDoc', function () {
         };
 
     var myPDF = PDFObject.embed(Path, "#divDocEmbed", Options);
+    $('#pdf_modal').modal();
+});
+
+$('#table').on("click", '.asDoc', function () {
+    var Path = $(this).attr('data-path');
+
     $('#doc_modal').modal();
 });
 
@@ -108,6 +120,7 @@ $('#table').on('click', '.btn-outline-danger', function () {
         }
     });
 });
+
 function getcarsfiles(ccid){
     // document.getElementById("noresult").style.display = "none";
     $.ajax({
@@ -136,7 +149,7 @@ function getcarsfiles(ccid){
 $(document).on('click','.create-modal', function() {
     $('#create').modal('show');
     $('.form-horizontal').show();
-    $('.modal-title').text('صورة مرفقة للسيارة');
+    $('.modal-title').text('صورة مرفقة للزيون');
     $("#car-id").val($(this).attr('data-id'));
     // console.log($(this).attr('data-id'));
     // cleardropzone();

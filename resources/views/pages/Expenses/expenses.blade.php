@@ -34,9 +34,9 @@
                                         <strong class="card-title">{{trans('expenses.Expenses.exptitlecard')}}</strong>
                                     </div>
                                     <div class="card-body">
-                                        {{--##Exp Date & Type --}}
+                                        {{--##Exp Date & Type & Branch--}}
                                         <div class="row">
-                                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                            <div class="col-md-4 col-sm-12 col-xs-12">
                                                 <div class="form-group has-success">
                                                     <label class="required" for="expdate"
                                                            class="control-label mb-1">{{trans('expenses.Expenses.expdate')}}</label>
@@ -50,7 +50,7 @@
 
                                                 </div>
                                             </div>
-                                            <div class="col-md-8 col-sm-6 col-xs-12">
+                                            <div class="col-md-4 col-sm-12 col-xs-12">
                                                 <div class="form-group" data-label="3">
                                                     <label class="required" class="control-label col-sm-4" for="exptype">{{trans('expenses.Expenses.exptype')}}</label>
                                                     <select id="exptype" name="exptype" class="form-control p selectexptype"
@@ -66,41 +66,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        {{--##Amount &  Currency--}}
-                                        <div class="row">
-                                            <div class="col-md-4 col-sm-6 col-xs-12">
-                                                <div class="form-group has-success">
-                                                    <label class="required" for="amount" class="control-label mb-1">{{trans('expenses.Expenses.amount')}}</label>
-                                                    <input id="amount" name="amount" type="number"
-                                                           class="form-control amount valid" value="0">
-                                                    <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
-                                                          data-valmsg-replace="true"></span>
-
-                                                    <div class="alert alert-danger" id="err_details_amount" style="display:none">
-                                                        {{trans('validation.tabs.expamount_required')}}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3 col-sm-6 col-xs-12">
-                                                <div class="form-group" data-label="3">
-                                                    <label class="required" class="control-label col-sm-4" for="curr">{{trans('expenses.Expenses.curr')}}</label>
-                                                    <select id="curr" name="curr" class="form-control p selectcurr"
-                                                            aria-required="true" aria-invalid="false">
-                                                        <option></option>
-                                                        @foreach($currlist as $culist)
-                                                            <option value="{{$culist -> id}}">{{$culist -> currname_ara}}</option>
-                                                        @endforeach
-                                                    </select>
-
-                                                    <div class="alert alert-danger" id="err_details_curr" style="display:none">
-                                                        {{trans('validation.tabs.expcurr_required')}}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-5 col-sm-6 col-xs-12">
+                                            <div class="col-md-4 col-sm-12 col-xs-12">
                                                 <div class="form-group" data-label="3">
                                                     <label class="required" class="control-label col-sm-4" for="branch">{{trans('expenses.Expenses.branch')}}</label>
                                                     <select id="branch" name="branch" class="form-control p selectbranch"
@@ -114,6 +80,104 @@
                                                     <div class="alert alert-danger" id="err_details_branch" style="display:none">
                                                         {{trans('validation.tabs.expbranch_required')}}
                                                     </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        {{--##Amount &  Currency & Payment Type--}}
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-12 col-xs-12">
+                                                <div class="form-group has-success">
+                                                    <label class="required" for="amount" class="control-label mb-1">{{trans('expenses.Expenses.amount')}}</label>
+                                                    <input id="amount" name="amount" type="number"
+                                                           class="form-control amount valid " value="0">
+                                                    <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                                          data-valmsg-replace="true"></span>
+
+                                                    <div class="alert alert-danger" id="err_details_amount" style="display:none">
+                                                        {{trans('validation.tabs.expamount_required')}}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-xs-12 col-xs-12"xs>
+                                                <div class="form-group" data-label="3">
+                                                    <label class="required" class="control-label col-sm-4" for="curr">{{trans('expenses.Expenses.curr')}}</label>
+                                                    <select id="curr" name="curr" class="form-control p selectcurr"
+                                                            aria-required="true" aria-invalid="false">
+                                                        <option></option>
+                                                        @foreach($currlist as $culist)
+                                                            <option value="{{$culist -> id}}">{{$culist -> currname_eng}}</option>
+                                                        @endforeach
+                                                    </select>
+
+                                                    <div class="alert alert-danger" id="err_details_curr" style="display:none">
+                                                        {{trans('validation.tabs.expcurr_required')}}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-xs-12 col-xs-12">
+                                                <div class="form-group" data-label="300">
+                                                    <label class="required" class="control-label col-sm-4" for="paymenttype">{{trans('page-contract.contract.fields.paymenttype')}}</label>
+                                                    <select id="paymenttype" name="paymenttype" class="form-control p selectpaymenttype"
+                                                            aria-required="true" aria-invalid="false">
+                                                        <option></option>
+                                                        @foreach($paymenttype as $ptypelist)
+                                                            <option value="{{$ptypelist -> id}}">{{$ptypelist -> Description}}</option>
+                                                        @endforeach
+                                                    </select>
+
+                                                    <div class="alert alert-danger" id="err_details_paymenttype" style="display:none">
+                                                        {{trans('validation.tabs.paytype_required')}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{--##Banks &  Checknum & Checkdate--}}
+                                        <div class="row" id="banks-div">
+
+                                            <div class="col-md-4 col-xs-12 col-xs-12">
+                                                <div class="form-group" data-label="10">
+                                                    <label class="required" class="control-label col-sm-4" for="banks">{{trans('page-contract.contract.fields.banks')}}</label>
+                                                    <select id="banks" name="banks" class="form-control p selectbanks"
+                                                            aria-required="true" aria-invalid="false">
+                                                        <option></option>
+                                                        @foreach($bankslist as $blist)
+                                                            <option value="{{$blist -> id}}" {{$blist->id == 1 ? 'selected' : '' }}>{{$blist -> Description}}</option>
+                                                        @endforeach
+                                                    </select>
+
+                                                    <div class="alert alert-danger" id="err_details_bank" style="display:none">
+                                                        {{trans('validation.tabs.banks_required')}}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-xs-12 col-xs-12">
+                                                <div class="form-group has-success">
+                                                    <label for="checknum" class="control-label mb-1">{{trans('page-contract.contract.fields.checknum')}}</label>
+                                                    <input id="checknum" name="checknum" type="text"
+                                                           class="form-control checknum valid" value="-">
+                                                    <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                                          data-valmsg-replace="true"></span>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-xs-12 col-xs-12">
+                                                <div class="form-group has-success">
+                                                    <label class="required" for="checkdate"
+                                                           class="control-label mb-1">{{trans('expenses.Expenses.checkdate')}}</label>
+                                                    <input id="checkdate" name="checkdate" type="date"
+                                                           class="form-control checkdate valid"
+                                                           value="{{old('checkdate')}}">
+
+                                                    <div class="alert alert-danger" id="err_details_checkdate" style="display:none">
+                                                        {{trans('validation.tabs.checkdate_required')}}
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -188,6 +252,15 @@
                                                 </tr>
                                                 </thead>
 
+                                                <tfoot>
+                                                <tr>
+                                                    <th id="trusd" colspan="7" style="text-align:right">{{ trans('page-contract.contract.tables.totalbills_usd') }} :</th>
+                                                </tr>
+                                                <tr>
+                                                    <th id="trlbp" colspan="7" style="text-align:right">{{ trans('page-contract.contract.tables.totalbills_lbp') }} :</th>
+                                                </tr>
+                                                </tfoot>
+
                                             </table>
                                         </div>
                                     </div>
@@ -198,6 +271,8 @@
                          <br>
             <div class="hide" id="hidden-values">
                 <input id="def_quick_add" type="hidden" value="{{url('/addNewValueexp')}}">
+                <input id="total_bills_usd" type="hidden" value="{{ trans('page-contract.contract.tables.totalbills_usd') }}">
+                <input id="total_bills_lbp" type="hidden" value="{{ trans('page-contract.contract.tables.totalbills_lbp') }}">
             </div>
         </div>
         <!-- /.container-fluid -->

@@ -28,7 +28,7 @@ class SettingsController extends Controller
         $total_row = $checkexist->count();
         if($total_row > 0) {
             $data['settingsDB'] = DB::table('settings')
-                ->select('id','img_filename','curr')
+                ->select('id','img_filename','curr','billnum','recunum','accnum','reminder','smsrenew','smspayment')
                 ->get();
 
             $data['setid'] = $data['settingsDB'][0]->id;
@@ -61,11 +61,17 @@ class SettingsController extends Controller
 
             $values_to_insert = [
                 'curr'=> $request->get('curr'),
+                'billnum'=> $request->get('billnum'),
+                'recunum'=> $request->get('recunum'),
+                'accnum'=> $request->get('accnum'),
+                'reminder'=> $request->get('reminder'),
+                'smsrenew'=> $request->get('smsrenewdetails'),
+                'smspayment'=> $request->get('smspaymentdetails'),
                 'created_by'=> Auth::user()->id,
                 'created_at' => date('Y-m-d'),
             ];
 
-            $setid = DB::table('Settings')->insertGetId($values_to_insert);
+            $setid = DB::table('settings')->insertGetId($values_to_insert);
 
             $counter = 1;
             $path_info = pathinfo($request->file('photo')->getClientOriginalName());
@@ -80,7 +86,7 @@ class SettingsController extends Controller
             if ($request->file('photo')->isValid()) {
                 $request->file('photo')->move('files/images/company/', $file_name . '.' . $extension);
 
-                DB::table('Settings')
+                DB::table('settings')
                     ->where('id', $setid)
                     ->update([
                         'img_filename' => $file_name . '.' . $extension,
@@ -97,11 +103,17 @@ class SettingsController extends Controller
 
             $values_to_update = [
                 'curr'=> $request->get('curr'),
+                'billnum'=> $request->get('billnum'),
+                'recunum'=> $request->get('recunum'),
+                'accnum'=> $request->get('accnum'),
+                'reminder'=> $request->get('reminder'),
+                'smsrenew'=> $request->get('smsrenewdetails'),
+                'smspayment'=> $request->get('smspaymentdetails'),
                 'updated_by'=> Auth::user()->id,
                 'updated_at' => date('Y-m-d'),
             ];
 
-            DB::table('Settings')
+            DB::table('settings')
                 ->where('id', '=', $request->get('statusid'))
                 ->update($values_to_update);
 
@@ -119,7 +131,7 @@ class SettingsController extends Controller
                 if ($request->file('photo')->isValid()) {
                     $request->file('photo')->move('files/images/company/', $file_name . '.' . $extension);
 
-                    DB::table('Settings')
+                    DB::table('settings')
                         ->where('id', $request->get('statusid'))
                         ->update([
                             'img_filename' => $file_name . '.' . $extension,

@@ -18,24 +18,39 @@ class ExpensesController extends Controller
     {
         abort_if(Gate::denies('expenses_access'), \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-         $setcurr = DB::table('Settings')
-            ->select('curr')
+       $bankslist = DB::table('banks')
+            ->select('id', 'Description')
             ->get();
 
         $currlist = DB::table('currency')
-            ->select('id', 'currname_ara')
-            ->where('id','=',$setcurr[0]->curr)
+            ->select('id', 'currname_eng')
             ->get();
 
         $branchlist = DB::table('branch')
             ->select('id', 'name')
             ->get();
 
+        if (Auth::user()->can('all_access')) {
+            $branchlist = DB::table('branch')
+                ->select('id', 'name')
+                ->get();
+        }else {
+            $bIds = Auth::user()->branch_id;
+            $branchlist = DB::table('branch')
+                ->select('id', 'name')
+                ->where('id','=',$bIds)
+                ->get();
+        }
+
         $exptypelist = DB::table('exptype')
             ->select('id', 'Description')
             ->get();
 
-        return view('pages.Expenses.expenses', compact('currlist','branchlist','exptypelist'));
+        $paymenttype = DB::table('paymenttype')
+            ->select('id', 'Description')
+            ->get();
+
+        return view('pages.Expenses.expenses', compact('currlist','branchlist','exptypelist','paymenttype','bankslist'));
     }
 
     public function getexplist(Request $request)
@@ -46,35 +61,37 @@ class ExpensesController extends Controller
 
         if (Auth::user()->can('all_access')) {
             $exptlist = DB::table('getexpenses')
-                ->select('expid' , 'expdate', 'exptypeid', 'amount','currid','curr','branchid','brname','exptype')
-                ->whereBetween('expdate', [$from, $to])
-                ->orderBy('expdate', 'asc')
+                ->select('payid' , 'paydate', 'exptypeid', 'payamount','paycurrid','paycurr','branchid','brname','exptype','paytypeid','paytype','paychecknum','bankid','bankname','checkdate')
+                ->whereBetween('paydate', [$from, $to])
+                ->where('partner', '=', '10')
+                ->orderBy('paydate', 'desc')
                 ->get();
         }else{
             $bIds = Auth::user()->branch_id;
             $exptlist = DB::table('getexpenses')
-                ->select('expid' , 'expdate', 'exptypeid', 'amount','currid','curr','branchid','brname','exptype')
+                ->select('payid' , 'paydate', 'exptypeid', 'payamount','paycurrid','paycurr','branchid','brname','exptype','paytypeid','paytype','paychecknum','bankid','bankname','checkdate')
                 ->where('branchid', '=', $bIds)
-                ->whereBetween('expdate', [$from, $to])
-                ->orderBy('expdate', 'asc')
+                ->whereBetween('paydate', [$from, $to])
+                ->where('partner', '=', '10')
+                ->orderBy('paydate', 'desc')
                 ->get();
         }
 
         $datatables = Datatables::of($exptlist)
             ->editColumn('expid', function ($exp) {
-                return $exp->expid;
+                return $exp->payid;
             })
             ->editColumn('expdate', function ($exp) {
-                return $exp->expdate;
+                return $exp->paydate;
             })
             ->editColumn('exptype', function ($exp) {
                 return $exp->exptype;
             })
             ->editColumn('amount', function ($exp) {
-                return $exp->amount;
+                return number_format($exp->payamount);
             })
             ->editColumn('curr', function ($exp) {
-                return $exp->curr;
+                return $exp->paycurr;
             })
             ->editColumn('brname', function ($exp) {
                 return $exp->brname;
@@ -82,10 +99,10 @@ class ExpensesController extends Controller
             ->editColumn('expaction', function ($exp) {
                 $buttons = "";
                 if (Auth::user()->can('expenses_edit')) {
-                    $buttons .= '<button class="edit-btn btn btn-warning btn-sm" title="'. trans('expenses.Expenses.edit') .'" data-id="'.$exp -> expid.'" data-expdate="'.$exp -> expdate.'" data-exptype="'.$exp -> exptype.'" data-exptypeid="'.$exp -> exptypeid.'" data-expamount="'.$exp -> amount.'" data-expcurr="'.$exp -> curr.'" data-expcurrid="'.$exp -> currid.'" data-expbranch="'.$exp -> brname.'" data-expbranchid="'.$exp -> branchid.'"><i class="fa fa-edit"></i></button> ';
+                    $buttons .= '<button class="edit-btn btn btn-warning btn-sm" title="'. trans('expenses.Expenses.edit') .'" data-id="'.$exp -> payid.'" data-expdate="'.$exp -> paydate.'" data-exptype="'.$exp -> exptype.'" data-exptypeid="'.$exp -> exptypeid.'" data-expamount="'.$exp -> payamount.'" data-expcurr="'.$exp -> paycurr.'" data-expcurrid="'.$exp -> paycurrid.'" data-expbranch="'.$exp -> brname.'" data-expbranchid="'.$exp -> branchid.'" data-paytypeid="'.$exp -> paytypeid.'" data-paytype="'.$exp -> paytype.'" data-checknum="'.$exp -> paychecknum.'" data-checkdate="'.$exp -> checkdate.'" data-bankid="'.$exp -> bankid.'" data-bankname="'.$exp -> bankname.'"><i class="fa fa-edit"></i></button> ';
                 }
                 if (Auth::user()->can('expenses_delete')) {
-                    $buttons .= '<button class="delete-btn btn btn-danger btn-sm" title="'. trans('expenses.Expenses.delete') .'" data-id="'.$exp -> expid.'" data-title="'.$exp -> exptype.'"><i class="fas fa-trash"></i></button>';
+                    $buttons .= '<button class="delete-btn btn btn-danger btn-sm" title="'. trans('expenses.Expenses.delete') .'" data-id="'.$exp -> payid.'" data-title="'.$exp -> exptype.'"><i class="fas fa-trash"></i></button>';
                 }
                 return $buttons;
             })->rawColumns(['expaction']);
@@ -108,10 +125,13 @@ class ExpensesController extends Controller
 
             $rules = array(
                 'expdate' => 'required|date',
+                'checkdate' => 'required|date',
                 'exptype' => 'required',
                 'amount' =>'required',
                 'curr' =>'required',
+                'bank' =>'required',
                 'branch' =>'required',
+                'paymenttype' =>'required',
             );
 
 
@@ -122,15 +142,21 @@ class ExpensesController extends Controller
             }
 
             $values_to_insert = [
-                'expdate' => $request->get('expdate'),
+                'paymentdate' => $request->get('expdate'),
+                'checkdate' => $request->get('checkdate'),
                 'exptype' => $request->get('exptype'),
                 'amount' => $request->get('amount'),
                 'curr' => $request->get('curr'),
                 'branch' => $request->get('branch'),
+                'paymenttype' => $request->get('paymenttype'),
+                'checknum' => $request->get('checknum'),
+                'bank' => $request->get('bank'),
+                'partner' => '10',
+                'fromaccount' => '20',
                 'created_by'=> Auth::user()->id,
                 'created_at' => date('Y-m-d'),
             ];
-            $data = DB::table('expenses')->insert($values_to_insert);
+            $data = DB::table('clientpayments')->insert($values_to_insert);
         }
         return response()->json($data);
     }
@@ -141,10 +167,13 @@ class ExpensesController extends Controller
 
             $rules = array(
                 'expdate' => 'required|date',
+                'checkdate' => 'required|date',
                 'exptype' => 'required',
                 'amount' =>'required',
                 'curr' =>'required',
+                'bank' =>'required',
                 'branch' =>'required',
+                'paymenttype' =>'required',
             );
 
 
@@ -154,14 +183,18 @@ class ExpensesController extends Controller
                 return \Illuminate\Support\Facades\Response::json(array('errors' => $validator->getMessageBag()->toarray()));
             }
 
-            $data =  DB::table('expenses')
+            $data =  DB::table('clientpayments')
                 ->where('id', $request->get('id'))
                 ->update([
-                    'expdate' => $request->get('expdate'),
+                    'paymentdate' => $request->get('expdate'),
+                    'checkdate' => $request->get('checkdate'),
                     'exptype' => $request->get('exptype'),
                     'amount' => $request->get('amount'),
                     'curr' => $request->get('curr'),
                     'branch' => $request->get('branch'),
+                    'paymenttype' => $request->get('paymenttype'),
+                    'checknum' => $request->get('checknum'),
+                    'bank' => $request->get('bank'),
                     'updated_by'=> Auth::user()->id,
                     'updated_at' => date('Y-m-d'),
                 ]);
@@ -172,7 +205,7 @@ class ExpensesController extends Controller
 
     public function deleteexp(Request $request){
 
-        DB::table('expenses')
+        DB::table('clientpayments')
             ->where('id','=', $request->get('id'))
             ->delete();
 
@@ -198,7 +231,85 @@ class ExpensesController extends Controller
                 ];
                 $id = DB::table('exptype')->insertGetId($values_to_insert);
                 return response()->json(['id' => $id, 'success' => 'Record is successfully added']);
+            }elseif($tbid == "10") {
+                $values_to_insert = [
+                    'Description' => $request->get('description'),
+                ];
+                $id = DB::table('banks')->insertGetId($values_to_insert);
+                return response()->json(['id' => $id, 'success' => 'Record is successfully added']);
             }
         }
+    }
+
+    public function getexpenses_usd(Request $request){
+
+        $from = $request->get('fromdate');
+        $to = $request->get('todate');
+
+        if (Auth::user()->can('all_access')) {
+            $exptlist = DB::table('getexpenses')
+                ->select('payid' ,DB::raw('SUM(payamount) AS coamount'),'paycurrid','paycurr')
+                ->whereBetween('paydate', [$from, $to])
+                ->where('partner', '=', '10')
+                ->where('paycurrid', '=', '3')
+                ->groupBy('paycurr','paycurrid')
+                ->get();
+        }else{
+            $bIds = Auth::user()->branch_id;
+            $exptlist = DB::table('getexpenses')
+                ->select('payid' ,DB::raw('SUM(payamount) AS coamount'),'paycurrid','paycurr')
+                ->where('branchid', '=', $bIds)
+                ->whereBetween('paydate', [$from, $to])
+                ->where('partner', '=', '10')
+                ->where('paycurrid', '=', '3')
+                ->groupBy('paycurr','paycurrid')
+                ->get();
+        }
+
+        if(isset($exptlist[0]->coamount)) {
+            $rec2 = number_format($exptlist[0]->coamount);
+            $rec3 = $exptlist[0]->paycurr;
+        }else{
+            $rec2 = "0";
+            $rec3 = "USD";
+        }
+
+        return response()->json(['ramount'=> $rec2,'rcurr' => $rec3]);
+    }
+
+    public function getexpenses_lbp(Request $request){
+
+        $from = $request->get('fromdate');
+        $to = $request->get('todate');
+
+        if (Auth::user()->can('all_access')) {
+            $exptlist = DB::table('getexpenses')
+                ->select('payid' ,DB::raw('SUM(payamount) AS coamount'),'paycurrid','paycurr')
+                ->whereBetween('paydate', [$from, $to])
+                ->where('partner', '=', '10')
+                ->where('paycurrid', '=', '2')
+                ->groupBy('paycurr','paycurrid')
+                ->get();
+        }else{
+            $bIds = Auth::user()->branch_id;
+            $exptlist = DB::table('getexpenses')
+                ->select('payid' ,DB::raw('SUM(payamount) AS coamount'),'paycurrid','paycurr')
+                ->where('branchid', '=', $bIds)
+                ->whereBetween('paydate', [$from, $to])
+                ->where('partner', '=', '10')
+                ->where('paycurrid', '=', '2')
+                ->groupBy('paycurr','paycurrid')
+                ->get();
+        }
+
+        if(isset($exptlist[0]->coamount)) {
+            $rec2 = number_format($exptlist[0]->coamount);
+            $rec3 = $exptlist[0]->paycurr;
+        }else{
+            $rec2 = "0";
+            $rec3 = "LBP";
+        }
+
+        return response()->json(['ramount'=> $rec2,'rcurr' => $rec3]);
     }
 }

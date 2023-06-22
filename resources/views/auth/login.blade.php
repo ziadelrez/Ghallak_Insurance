@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Najib Rent A Cars</title>
+    <title> Hallak Insurance Broker</title>
 
     <!-- Custom fonts for this template-->
     <link href={{ asset('adminassets/vendor/fontawesome-free/css/all.min.css') }} rel="stylesheet" type="text/css">
@@ -25,7 +25,7 @@
 
 </head>
 
-<body class="bg-gradient-danger ">
+<body class=" ">
 
 <div class="container">
 
@@ -40,20 +40,21 @@
                     <div class="row">
                         <div class="col-lg-6 d-none d-lg-block ">
                             <div class="p-5">
-                            <img src={{ URL::asset('adminassets/img/najibcarlogin.jpg') }} style="width:100%">
+                            <img src={{ URL::asset('adminassets/img/logo.jpg') }} style="width:100%">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Welcome To Login To Dashboard Page !!!!</h1>
+                                    <h1 class="h4 text-gray-900 mb-4">Welcome To Our Dashboard Page !!!!</h1>
                                 </div>
                                 @include('includes.alerts.errors')
                                 @include('includes.alerts.success')
                                 <form class="user" method="POST" action="" id="loginform">
                                     @csrf
                                     <div class="form-group">
-                                        <input type="email" class="form-control  text-align:center @error('email') is-invalid @enderror" id="exampleInputEmail" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                                        <input type="text" class="form-control  text-align:center @error('email') is-invalid @enderror" id="" name="email" value="{{ old('email') }}" required  placeholder="Enter Your Username...">
+{{--                                        <input type="email" class="form-control  text-align:center @error('email') is-invalid @enderror" id="" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus aria-describedby="emailHelp" placeholder="Enter Your Username...">--}}
                                                 @error('email')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -61,7 +62,7 @@
                                                 @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control  @error('password') is-invalid @enderror" id="exampleInputPassword" name="password" required autocomplete="current-password" placeholder="Password">
+                                        <input type="password" class="form-control  @error('password') is-invalid @enderror" id="exampleInputPassword" name="password" required autocomplete="current-password" placeholder="Enter Your Password...">
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                      <strong>{{ $message }}</strong>

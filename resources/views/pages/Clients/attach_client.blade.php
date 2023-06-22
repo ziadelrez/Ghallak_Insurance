@@ -74,7 +74,7 @@
                                     <td width="400px">{{$doclist -> docname}}</td>
                                     <td class="text-center" width="200px">
 
-                                        <a class="viewdoc-modal btn btn-info btn-sm" title="{{ trans('page-client.clients.titles.viewdoc') }}" href="{{ route('print.doc', $doclist -> id) }}">
+                                        <a class="viewdoc-modal btn btn-info btn-sm" title="{{ trans('page-client.clients.titles.viewdoc') }}" href="{{ route('print.doc', $doclist -> id) }}" target="_blank">
                                             <i class="fas fa-eye"></i>
                                         </a>
 
